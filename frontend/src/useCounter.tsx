@@ -8,7 +8,7 @@ export const useCounter = () => {
 
   const counter = (
     <div>
-      <button onClick={() => setCount((c) => c + 1)}>count is {count}</button>
+      <button type="button" onClick={() => setCount((c) => c + 1)}>count is {count}</button>
     </div>
   )
 
