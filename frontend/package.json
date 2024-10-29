@@ -12,7 +12,9 @@
     "lint:fix": "biome lint --write ./src",
     "format:fix": "biome format ./src --write",
     "check:fix": "biome check --write ./src",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:watch": "vitest --watch"
   },
   "dependencies": {
     "jotai": "^2.10.1",
