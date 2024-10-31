@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../.:/app  # ホストのカレントディレクトリを/appにマウント
+    working_dir: /app
+    tty: true  # エラー出力などが必要な場合にコンテナが終了しないようにする
