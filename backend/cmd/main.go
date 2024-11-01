@@ -5,10 +5,16 @@ import (
 
 	v1Router "github.com/RyotaAbe1014/Pastapal/internal/presentation/v1"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
 	e := echo.New()
+	// settings.CorsMiddleware(e)
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:5173"}, // フロントエンドのURLを許可
+		AllowMethods: []string{echo.GET, echo.POST, echo.PUT, echo.DELETE, echo.OPTIONS},
+	}))
 	e.GET("/health", func(c echo.Context) error {
 		return c.String(http.StatusOK, "True")
 	})
