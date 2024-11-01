@@ -1,5 +1,6 @@
 // render hooksパターンを使用したカウンター
 import { atom, useAtom } from "jotai";
+import { Button } from "./components/ui/button";
 
 const countAtom = atom(0);
 
@@ -8,9 +9,9 @@ export const useCounter = () => {
 
 	const counter = (
 		<div>
-			<button type="button" onClick={() => setCount((c) => c + 1)}>
+			<Button type="button" onClick={() => setCount((c) => c + 1)}>
 				count is {count}
-			</button>
+			</Button>
 		</div>
 	);
 
