@@ -1,16 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { useCounter } from "@/useCounter";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { atom, useAtom } from "jotai";
 import useSWR from "swr";
 
 export const Route = createLazyFileRoute("/")({
 	component: Index,
 });
 
+const countAtom = atom(0);
+
 export function Index() {
-	const [count, setCount] = useState(0);
-	const [counter] = useCounter();
+	const [count, setCount] = useAtom(countAtom);
 
 	const { isLoading, isValidating, data } = useSWR(
 		"http://localhost:8000/health",
@@ -33,7 +33,7 @@ export function Index() {
 			</div>
 			<div className="card">
 				using Jotai
-				{counter}
+				{/* {counter} */}
 			</div>
 
 			<div className="card">
