@@ -6,7 +6,8 @@
 		"useIgnoreFile": false
 	},
 	"files": {
-		"ignoreUnknown": false,
+		"ignoreUnknown": true,
+		"include": ["src/**/*"],
 		"ignore": ["components/ui/*.tsx", "routeTree.gen.ts"]
 	},
 	"formatter": {
