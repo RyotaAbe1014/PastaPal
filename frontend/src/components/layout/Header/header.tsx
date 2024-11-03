@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, IconButton } from "@chakra-ui/react";
+import { VscAccount } from "react-icons/vsc";
 
 export type HeaderProps = {
 	path: string;
 };
-
 export const Header = ({ path }: HeaderProps) => {
 	return (
 		<Box
@@ -51,7 +51,11 @@ export const Header = ({ path }: HeaderProps) => {
 						食材
 					</Button>
 				</Box>
-				<Box mr={4}>{/* アカウントアイコン */}</Box>
+				<Box mr={4}>
+					<IconButton rounded="full" aria-label="アカウント" bg="green.600">
+						<VscAccount />
+					</IconButton>
+				</Box>
 			</Box>
 		</Box>
 	);
