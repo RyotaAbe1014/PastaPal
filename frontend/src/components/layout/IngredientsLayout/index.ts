@@ -1,1 +1,1 @@
-export * from './ingredientsLayout';
+export * from "./ingredientsLayout";
