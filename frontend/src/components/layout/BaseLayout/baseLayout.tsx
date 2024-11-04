@@ -1,11 +1,11 @@
 import { Box } from "@chakra-ui/react";
 import { Header } from "../Header";
 
-export type IngredientsLayoutProps = {
+export type BaseLayoutProps = {
 	children: React.ReactNode;
 };
 
-export const IngredientsLayout = ({ children }: IngredientsLayoutProps) => {
+export const BaseLayout = ({ children }: BaseLayoutProps) => {
 	return (
 		<Box minH={"100vh"} display={"flex"} flexDirection={"column"}>
 			<Header path="ingredients" />
