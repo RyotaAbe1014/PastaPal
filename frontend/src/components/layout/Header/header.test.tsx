@@ -2,6 +2,7 @@ import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Header } from "./header";
+import { Wrapper } from "@/libs/test/wrapper";
 
 describe("Header Component", () => {
 	it("renders the Header component with dashboard path", () => {
@@ -9,6 +10,7 @@ describe("Header Component", () => {
 			<ChakraProvider value={defaultSystem}>
 				<Header path="dashboard" />
 			</ChakraProvider>,
+			{ wrapper: Wrapper }
 		);
 		expect(screen.getByText("ダッシュボード")).toBeInTheDocument();
 		expect(screen.getByText("レシピ")).toBeInTheDocument();
