@@ -1,12 +1,14 @@
-import { BaseLayout } from '@/components/layout/BaseLayout'
-import { IngredientCategoryCreateForm, IngredientCreateForm } from '@/features/ingredient'
-import { Box } from '@chakra-ui/react'
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { BaseLayout } from "@/components/layout/BaseLayout";
+import {
+	IngredientCategoryCreateForm,
+	IngredientCreateForm,
+} from "@/features/ingredient";
+import { Box } from "@chakra-ui/react";
+import { createLazyFileRoute } from "@tanstack/react-router";
 
-export const Route = createLazyFileRoute('/ingredients')({
+export const Route = createLazyFileRoute("/ingredients")({
 	component: Ingredients,
-
-})
+});
 
 function Ingredients() {
 	return (
@@ -17,6 +19,5 @@ function Ingredients() {
 				{/* TODO: 食材一覧 */}
 			</Box>
 		</BaseLayout>
-
-	)
+	);
 }
