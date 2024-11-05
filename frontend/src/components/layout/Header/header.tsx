@@ -35,13 +35,15 @@ export const Header = ({ path }: HeaderProps) => {
 					</Button>
 				</Box>
 				<Box mr={4}>
-					{/* レシピ遷移ボタン */}
-					<Button
-						bg={getButtonBackGroundColor(path, "recipe")}
-						color={getButtonTextColor(path, "recipe")}
-					>
-						レシピ
-					</Button>
+					<Link to="/ingredients">
+						{/* レシピ遷移ボタン */}
+						<Button
+							bg={getButtonBackGroundColor(path, "recipes")}
+							color={getButtonTextColor(path, "recipes")}
+						>
+							レシピ
+						</Button>
+					</Link>
 				</Box>
 				<Box mr={4}>
 					{/* 食材遷移ボタン */}
