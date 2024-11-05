@@ -12,5 +12,6 @@ type Story = StoryObj<typeof BaseLayout>;
 export const Default: Story = {
 	args: {
 		children: "Ingredients Layout",
+		path: "ingredients",
 	},
 };

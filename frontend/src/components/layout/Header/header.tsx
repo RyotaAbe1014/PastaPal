@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Box, Heading, IconButton } from "@chakra-ui/react";
+import { Link } from "@tanstack/react-router";
 import { VscAccount } from "react-icons/vsc";
 
 export type HeaderProps = {
@@ -44,12 +45,14 @@ export const Header = ({ path }: HeaderProps) => {
 				</Box>
 				<Box mr={4}>
 					{/* 食材遷移ボタン */}
-					<Button
-						bg={getButtonBackGroundColor(path, "ingredients")}
-						color={getButtonTextColor(path, "ingredients")}
-					>
-						食材
-					</Button>
+					<Link to="/ingredients">
+						<Button
+							bg={getButtonBackGroundColor(path, "ingredients")}
+							color={getButtonTextColor(path, "ingredients")}
+						>
+							食材
+						</Button>
+					</Link>
 				</Box>
 				<Box mr={4}>
 					<IconButton rounded="full" aria-label="アカウント" bg="green.600">

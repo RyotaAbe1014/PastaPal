@@ -4,7 +4,7 @@ import { BsPlus } from "react-icons/bs";
 
 export const IngredientCategoryCreateForm = () => {
 	return (
-		<Card.Root variant={"elevated"}>
+		<Card.Root variant={"elevated"} maxWidth={"900px"}>
 			<Card.Header>
 				<Card.Title fontSize={"xl"} fontWeight={"700"} color={"green.600"}>
 					種別の追加
