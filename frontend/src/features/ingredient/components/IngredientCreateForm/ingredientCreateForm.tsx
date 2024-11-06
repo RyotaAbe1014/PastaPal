@@ -24,7 +24,7 @@ export const IngredientCreateForm = () => {
 	return (
 		<Card.Root variant={"elevated"} maxWidth={"900px"}>
 			<Card.Header>
-				<Card.Title fontSize={"xl"} fontWeight={"700"} color={"green.600"}>
+				<Card.Title fontSize={"xl"} fontWeight={"700"} color={"green.700"}>
 					食材の追加
 				</Card.Title>
 			</Card.Header>
