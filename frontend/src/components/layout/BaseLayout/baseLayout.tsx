@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { Header } from "../Header";
 import { useLocation } from "@tanstack/react-router";
+import { Header } from "../Header";
 
 export type BaseLayoutProps = {
 	children: React.ReactNode;
