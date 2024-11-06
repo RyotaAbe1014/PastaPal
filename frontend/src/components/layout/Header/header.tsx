@@ -35,11 +35,11 @@ export const Header = ({ path }: HeaderProps) => {
 					</Button>
 				</Box>
 				<Box mr={4}>
-					<Link to="/ingredients">
+					<Link to="/recipes">
 						{/* レシピ遷移ボタン */}
 						<Button
-							bg={getButtonBackGroundColor(path, "recipes")}
-							color={getButtonTextColor(path, "recipes")}
+							bg={getButtonBackGroundColor(path, "/recipes")}
+							color={getButtonTextColor(path, "/recipes")}
 						>
 							レシピ
 						</Button>
@@ -49,8 +49,8 @@ export const Header = ({ path }: HeaderProps) => {
 					{/* 食材遷移ボタン */}
 					<Link to="/ingredients">
 						<Button
-							bg={getButtonBackGroundColor(path, "ingredients")}
-							color={getButtonTextColor(path, "ingredients")}
+							bg={getButtonBackGroundColor(path, "/ingredients")}
+							color={getButtonTextColor(path, "/ingredients")}
 						>
 							食材
 						</Button>
