@@ -1,3 +1,4 @@
+import { LoginForm } from "@/features/auth";
 import { Box } from "@chakra-ui/react";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -14,9 +15,9 @@ const Login = () => {
 			display="flex"
 			justifyContent="center"
 			alignItems="center"
+			bgColor={"green.100"}
 		>
-			{/* TODO: ログインフォーム */}
-			loginformです
+			<LoginForm />
 		</Box>
 	);
 };
