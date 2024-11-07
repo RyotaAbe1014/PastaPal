@@ -18,6 +18,9 @@ RUN go mod tidy
 # AirのバイナリをインストールしてPATHに追加
 RUN go install github.com/air-verse/air@latest && mv /go/bin/air /usr/local/bin/air
 
+# sqlcのバイナリをインストールしてPATHに追加
+RUN go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest && mv /go/bin/sqlc /usr/local/bin/sqlc
+
 EXPOSE 8000
 
 # コンテナ起動時のデフォルトコマンド
