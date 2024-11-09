@@ -8,8 +8,17 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-type Author struct {
-	ID   int64
-	Name string
-	Bio  pgtype.Text
+type Ingredient struct {
+	ID         pgtype.UUID
+	Name       string
+	CategoryID pgtype.UUID
+	CreatedAt  pgtype.Timestamp
+	UpdatedAt  pgtype.Timestamp
+}
+
+type IngredientCategory struct {
+	ID        pgtype.UUID
+	Name      string
+	CreatedAt pgtype.Timestamp
+	UpdatedAt pgtype.Timestamp
 }

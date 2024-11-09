@@ -11,64 +11,102 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-const createAuthor = `-- name: CreateAuthor :one
-INSERT INTO authors (
-  name, bio
+const createIngredient = `-- name: CreateIngredient :one
+INSERT INTO ingredients (
+  name, category_id
 ) VALUES (
   $1, $2
 )
-RETURNING id, name, bio
+RETURNING id, name, category_id, created_at, updated_at
 `
 
-type CreateAuthorParams struct {
-	Name string
-	Bio  pgtype.Text
+type CreateIngredientParams struct {
+	Name       string
+	CategoryID pgtype.UUID
 }
 
-func (q *Queries) CreateAuthor(ctx context.Context, arg CreateAuthorParams) (Author, error) {
-	row := q.db.QueryRow(ctx, createAuthor, arg.Name, arg.Bio)
-	var i Author
-	err := row.Scan(&i.ID, &i.Name, &i.Bio)
+func (q *Queries) CreateIngredient(ctx context.Context, arg CreateIngredientParams) (Ingredient, error) {
+	row := q.db.QueryRow(ctx, createIngredient, arg.Name, arg.CategoryID)
+	var i Ingredient
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.CategoryID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
 	return i, err
 }
 
-const deleteAuthor = `-- name: DeleteAuthor :exec
-DELETE FROM authors
+const createIngredientCategory = `-- name: CreateIngredientCategory :one
+INSERT INTO ingredient_categories (
+  name
+) VALUES (
+  $1
+)
+RETURNING id, name, created_at, updated_at
+`
+
+func (q *Queries) CreateIngredientCategory(ctx context.Context, name string) (IngredientCategory, error) {
+	row := q.db.QueryRow(ctx, createIngredientCategory, name)
+	var i IngredientCategory
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
+const deleteIngredientCategory = `-- name: DeleteIngredientCategory :exec
+DELETE FROM ingredient_categories
 WHERE id = $1
 `
 
-func (q *Queries) DeleteAuthor(ctx context.Context, id int64) error {
-	_, err := q.db.Exec(ctx, deleteAuthor, id)
+func (q *Queries) DeleteIngredientCategory(ctx context.Context, id pgtype.UUID) error {
+	_, err := q.db.Exec(ctx, deleteIngredientCategory, id)
 	return err
 }
 
-const getAuthor = `-- name: GetAuthor :one
-SELECT id, name, bio FROM authors
+const getIngredientCategory = `-- name: GetIngredientCategory :one
+SELECT id, name, created_at, updated_at FROM ingredient_categories
 WHERE id = $1 LIMIT 1
 `
 
-func (q *Queries) GetAuthor(ctx context.Context, id int64) (Author, error) {
-	row := q.db.QueryRow(ctx, getAuthor, id)
-	var i Author
-	err := row.Scan(&i.ID, &i.Name, &i.Bio)
+func (q *Queries) GetIngredientCategory(ctx context.Context, id pgtype.UUID) (IngredientCategory, error) {
+	row := q.db.QueryRow(ctx, getIngredientCategory, id)
+	var i IngredientCategory
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
 	return i, err
 }
 
-const listAuthors = `-- name: ListAuthors :many
-SELECT id, name, bio FROM authors
+const listIngredients = `-- name: ListIngredients :many
+SELECT id, name, category_id, created_at, updated_at FROM ingredients
 ORDER BY name
 `
 
-func (q *Queries) ListAuthors(ctx context.Context) ([]Author, error) {
-	rows, err := q.db.Query(ctx, listAuthors)
+func (q *Queries) ListIngredients(ctx context.Context) ([]Ingredient, error) {
+	rows, err := q.db.Query(ctx, listIngredients)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Author
+	var items []Ingredient
 	for rows.Next() {
-		var i Author
-		if err := rows.Scan(&i.ID, &i.Name, &i.Bio); err != nil {
+		var i Ingredient
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.CategoryID,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
@@ -79,20 +117,58 @@ func (q *Queries) ListAuthors(ctx context.Context) ([]Author, error) {
 	return items, nil
 }
 
-const updateAuthor = `-- name: UpdateAuthor :exec
-UPDATE authors
-  set name = $2,
-  bio = $3
+const listIngredientsCategory = `-- name: ListIngredientsCategory :many
+SELECT id, name, created_at, updated_at FROM ingredient_categories
+ORDER BY name
+`
+
+func (q *Queries) ListIngredientsCategory(ctx context.Context) ([]IngredientCategory, error) {
+	rows, err := q.db.Query(ctx, listIngredientsCategory)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []IngredientCategory
+	for rows.Next() {
+		var i IngredientCategory
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const updateIngredientCategory = `-- name: UpdateIngredientCategory :exec
+UPDATE ingredient_categories
+  set name = $2
 WHERE id = $1
 `
 
-type UpdateAuthorParams struct {
-	ID   int64
+type UpdateIngredientCategoryParams struct {
+	ID   pgtype.UUID
 	Name string
-	Bio  pgtype.Text
 }
 
-func (q *Queries) UpdateAuthor(ctx context.Context, arg UpdateAuthorParams) error {
-	_, err := q.db.Exec(ctx, updateAuthor, arg.ID, arg.Name, arg.Bio)
+func (q *Queries) UpdateIngredientCategory(ctx context.Context, arg UpdateIngredientCategoryParams) error {
+	_, err := q.db.Exec(ctx, updateIngredientCategory, arg.ID, arg.Name)
+	return err
+}
+
+const deleteIngredient = `-- name: deleteIngredient :exec
+DELETE FROM ingredients
+WHERE id = $1
+`
+
+func (q *Queries) deleteIngredient(ctx context.Context, id pgtype.UUID) error {
+	_, err := q.db.Exec(ctx, deleteIngredient, id)
 	return err
 }
