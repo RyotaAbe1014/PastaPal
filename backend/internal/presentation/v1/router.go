@@ -3,10 +3,36 @@ package v1
 import (
 	"net/http"
 
+	"github.com/RyotaAbe1014/Pastapal/internal/infrastructure/oauth/github"
 	"github.com/labstack/echo/v4"
 )
 
 func Router(g *echo.Group) {
+	g.GET("/auth/github", func(c echo.Context) error {
+		// 認証URLを生成し、GitHubにリダイレクト
+		authURL, err := github.GenerateAuthURL("state") // TODO: stateはCSRF対策のための値、実際にはランダムな値を設定する
+		if err != nil {
+			return c.String(http.StatusInternalServerError, err.Error())
+		}
+		return c.Redirect(http.StatusTemporaryRedirect, authURL)
+	})
+
+	g.GET("/auth/github/callback", func(c echo.Context) error {
+		// GitHubからリダイレクトされてきたときに呼び出される
+		code := c.QueryParam("code")
+		if code == "" {
+			return c.String(http.StatusBadRequest, "code is empty")
+		}
+
+		// 認証コードをトークンに交換
+		token, err := github.ExchangeCodeForToken(c.Request().Context(), code)
+		if err != nil {
+			return c.String(http.StatusInternalServerError, err.Error())
+		}
+
+		return c.JSON(http.StatusOK, token)
+	})
+
 	// TODO: 必要なapiをとりあえず定義しているので、実装時に修正する
 	// echo.Groupはネストすることができるので、この関数内でさらにGroupを作成してルーティングを定義することができる
 	// ミドルウェアを設定する場合など、複雑になりそうであればモジュールを分割する
