@@ -4,14 +4,16 @@ export const ApiClient = () => {
 		headers: {
 			"Content-Type": "application/json",
 		},
-		BaseUrl: process.env.REACT_APP_API_URL,
+		BaseUrl: import.meta.env.VITE_ENV_API_URL,
 	};
-	const request = async <RequestType, ResponseType>(
+	const request = async <RequestType = undefined, ResponseType = unknown>(
 		path: string,
 		method: string,
 		params?: RequestType,
 	): Promise<ResponseType> => {
+		console.log("request", settings.BaseUrl);
 		const url = new URL(path, settings.BaseUrl);
+		console.log("url", url);
 		const options: RequestInit = {
 			...settings,
 			method,
@@ -31,7 +33,7 @@ export const ApiClient = () => {
 		return response.json() as Promise<ResponseType>;
 	};
 
-	const Get = async <RequestType, ResponseType>(
+	const Get = async <RequestType = undefined, ResponseType = unknown>(
 		path: string,
 		params?: RequestType,
 	): Promise<ResponseType> => {
@@ -42,15 +44,15 @@ export const ApiClient = () => {
 
 		return request(requestUrl, "GET", params);
 	};
-	const Post = <RequestType, ResponseType>(
+	const Post = <RequestType = undefined, ResponseType = unknown>(
 		path: string,
 		params: RequestType,
 	): Promise<ResponseType> => request(path, "POST", params);
-	const Put = <RequestType, ResponseType>(
+	const Put = <RequestType = undefined, ResponseType = unknown>(
 		path: string,
 		params: RequestType,
 	): Promise<ResponseType> => request(path, "PUT", params);
-	const Delete = <RequestType, ResponseType>(
+	const Delete = <RequestType = undefined, ResponseType = unknown>(
 		path: string,
 		params: RequestType,
 	): Promise<ResponseType> => request(path, "DELETE", params);
