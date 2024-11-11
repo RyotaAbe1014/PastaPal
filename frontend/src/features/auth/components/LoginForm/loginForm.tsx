@@ -11,7 +11,6 @@ export const LoginForm = () => {
 				</Card.Title>
 			</Card.Header>
 			<Card.Body display={"flex"} flexDirection={"column"} gap={8} pt={6}>
-
 				<Button type="button" backgroundColor={"black"}>
 					<FaGithub />
 					GitHubでログイン
