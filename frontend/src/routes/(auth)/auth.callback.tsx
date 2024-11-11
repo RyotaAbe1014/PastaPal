@@ -24,12 +24,12 @@ export const Route = createFileRoute("/(auth)/auth/callback")({
 });
 
 const AuthCallback = () => {
-	const params = Route.useSearch();
-	const { code, state } = params;
+	// const params = Route.useSearch();
+	// const { code, state } = params;
 
-	useEffectF(() => {
+	useEffect(() => {
 		// const generate
-	}, [code, state]);
+	}, []);
 
 	return (
 		<Box
