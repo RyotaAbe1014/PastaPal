@@ -10,14 +10,14 @@ import (
 func Router(g *echo.Group) {
 	g.GET("/auth/github", func(c echo.Context) error {
 		// 認証URLを生成し、GitHubにリダイレクト
-		authURL, err := github.GenerateAuthURL("state") // TODO: stateはCSRF対策のための値、実際にはランダムな値を設定する
+		authURL, err := github.GenerateAuthURL("state") // TODO: stateはCSRF対策のための値、実際にはランダムな値を設定するのが良い
 		if err != nil {
 			return c.String(http.StatusInternalServerError, err.Error())
 		}
 		return c.Redirect(http.StatusTemporaryRedirect, authURL)
 	})
 
-	g.GET("/auth/github/callback", func(c echo.Context) error {
+	g.POST("/auth/github/token", func(c echo.Context) error {
 		// GitHubからリダイレクトされてきたときに呼び出される
 		code := c.QueryParam("code")
 		if code == "" {
