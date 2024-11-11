@@ -4,6 +4,7 @@ import {
 } from "@/components/ui/progress-circle";
 import { Box, Heading } from "@chakra-ui/react";
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 type AuthCallbackProps = {
 	code: string;
@@ -24,7 +25,12 @@ export const Route = createFileRoute("/(auth)/auth/callback")({
 
 const AuthCallback = () => {
 	const params = Route.useSearch();
-	console.log(params);
+	const { code, state } = params;
+
+	useEffectF(() => {
+		// const generate
+	}, [code, state]);
+
 	return (
 		<Box
 			as="main"
