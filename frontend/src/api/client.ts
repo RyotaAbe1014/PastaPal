@@ -39,9 +39,8 @@ export const ApiClient = () => {
 		const queryString = params ? requestToUrlSearch(params).toString() : "";
 		// クエリパラメータがあればURLに追加
 		const requestUrl = queryString ? `${path}?${queryString}` : path;
-		const url = new URL(requestUrl, settings.BaseUrl).toString();
 
-		return request(url, "GET", params);
+		return request(requestUrl, "GET", params);
 	};
 	const Post = <RequestType, ResponseType>(
 		path: string,
