@@ -16,7 +16,7 @@ var OAuth2Config = &oauth2.Config{
 	Endpoint:     github.Endpoint,
 }
 
-// GenerateAuthURL は認証URLを生成します
+// 認証URLを生成
 func GenerateAuthURL(state string) (string, error) {
 	if state == "" {
 		return "", fmt.Errorf("ステートが空です")
@@ -25,7 +25,7 @@ func GenerateAuthURL(state string) (string, error) {
 	return OAuth2Config.AuthCodeURL(state, oauth2.AccessTypeOnline), nil
 }
 
-// ExchangeCodeForToken は認証コードをトークンに交換します
+// 認証コードをトークンに交換
 func ExchangeCodeForToken(ctx context.Context, code string) (*oauth2.Token, error) {
 	if code == "" {
 		return nil, fmt.Errorf("認証コードが空です")
