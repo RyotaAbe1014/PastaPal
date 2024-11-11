@@ -16,6 +16,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as AppRecipesImport } from './routes/_app/recipes'
 import { Route as AppIngredientsImport } from './routes/_app/ingredients'
 import { Route as authLoginImport } from './routes/(auth)/login'
+import { Route as authAuthCallbackImport } from './routes/(auth)/auth.callback'
 
 // Create/Update Routes
 
@@ -45,6 +46,12 @@ const AppIngredientsRoute = AppIngredientsImport.update({
 const authLoginRoute = authLoginImport.update({
   id: '/(auth)/login',
   path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const authAuthCallbackRoute = authAuthCallbackImport.update({
+  id: '/(auth)/auth/callback',
+  path: '/auth/callback',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -87,6 +94,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRecipesImport
       parentRoute: typeof AppImport
     }
+    '/(auth)/auth/callback': {
+      id: '/(auth)/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof authAuthCallbackImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -110,6 +124,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof authLoginRoute
   '/ingredients': typeof AppIngredientsRoute
   '/recipes': typeof AppRecipesRoute
+  '/auth/callback': typeof authAuthCallbackRoute
 }
 
 export interface FileRoutesByTo {
@@ -118,6 +133,7 @@ export interface FileRoutesByTo {
   '/login': typeof authLoginRoute
   '/ingredients': typeof AppIngredientsRoute
   '/recipes': typeof AppRecipesRoute
+  '/auth/callback': typeof authAuthCallbackRoute
 }
 
 export interface FileRoutesById {
@@ -127,13 +143,20 @@ export interface FileRoutesById {
   '/(auth)/login': typeof authLoginRoute
   '/_app/ingredients': typeof AppIngredientsRoute
   '/_app/recipes': typeof AppRecipesRoute
+  '/(auth)/auth/callback': typeof authAuthCallbackRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/login' | '/ingredients' | '/recipes'
+  fullPaths:
+    | '/'
+    | ''
+    | '/login'
+    | '/ingredients'
+    | '/recipes'
+    | '/auth/callback'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/login' | '/ingredients' | '/recipes'
+  to: '/' | '' | '/login' | '/ingredients' | '/recipes' | '/auth/callback'
   id:
     | '__root__'
     | '/'
@@ -141,6 +164,7 @@ export interface FileRouteTypes {
     | '/(auth)/login'
     | '/_app/ingredients'
     | '/_app/recipes'
+    | '/(auth)/auth/callback'
   fileRoutesById: FileRoutesById
 }
 
@@ -148,12 +172,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
   authLoginRoute: typeof authLoginRoute
+  authAuthCallbackRoute: typeof authAuthCallbackRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
   authLoginRoute: authLoginRoute,
+  authAuthCallbackRoute: authAuthCallbackRoute,
 }
 
 export const routeTree = rootRoute
@@ -170,7 +196,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/_app",
-        "/(auth)/login"
+        "/(auth)/login",
+        "/(auth)/auth/callback"
       ]
     },
     "/": {
@@ -193,6 +220,9 @@ export const routeTree = rootRoute
     "/_app/recipes": {
       "filePath": "_app/recipes.tsx",
       "parent": "/_app"
+    },
+    "/(auth)/auth/callback": {
+      "filePath": "(auth)/auth.callback.tsx"
     }
   }
 }
