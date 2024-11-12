@@ -1,8 +1,8 @@
 package v1
 
 import (
+	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/RyotaAbe1014/Pastapal/internal/infrastructure/oauth/github"
 	"github.com/labstack/echo/v4"
@@ -17,8 +17,8 @@ type GenerateTokenRequest struct {
 }
 
 type GenerateTokenResponse struct {
-	userID   string `json:"userID"`
-	username string `json:"username"`
+	UserID    string `json:"userId"`
+	AvatarUrl string `json:"avatarUrl"`
 }
 
 func Router(g *echo.Group) {
@@ -49,19 +49,30 @@ func Router(g *echo.Group) {
 			return c.String(http.StatusInternalServerError, err.Error())
 		}
 
-		cookie := new(http.Cookie)
-		cookie.Name = "accessToken"
-		cookie.Value = token.AccessToken
-		cookie.Expires = time.Now().Add(24 * time.Hour)
-		c.SetCookie(cookie)
-
 		user, err := github.GetUser(c.Request().Context(), token.AccessToken)
 
 		if err != nil || user == nil {
 			return c.String(http.StatusInternalServerError, err.Error())
 		}
 
-		return c.JSON(http.StatusOK, GenerateTokenResponse{userID: user.ID, username: user.Username})
+		fmt.Printf("%+v\n", user.Login)
+
+		// ここでRyotaAbe1014でないと認証エラーを返すようにする
+		if user.Login != "RyotaAbe1014" {
+			return c.String(http.StatusUnauthorized, "Unauthorized")
+		}
+		cookie := &http.Cookie{
+			Name:     "accessToken",
+			Value:    token.AccessToken,
+			Expires:  token.Expiry,
+			HttpOnly: true,
+			Secure:   true,
+			SameSite: http.SameSiteLaxMode,
+			Path:     "/",
+		}
+		c.SetCookie(cookie)
+
+		return c.JSON(http.StatusOK, GenerateTokenResponse{UserID: user.Login, AvatarUrl: user.AvatarUrl})
 	})
 
 	// TODO: 必要なapiをとりあえず定義しているので、実装時に修正する
