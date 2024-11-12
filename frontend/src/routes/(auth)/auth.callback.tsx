@@ -1,3 +1,4 @@
+import { ApiClient } from "@/api/client";
 import {
 	ProgressCircleRing,
 	ProgressCircleRoot,
@@ -9,6 +10,15 @@ import { useEffect } from "react";
 type AuthCallbackProps = {
 	code: string;
 	state: string;
+};
+
+type generateTokenAndGetUserRequest = {
+	code: string;
+};
+
+type generateTokenAndGetUserResponse = {
+	userId: string;
+	avatarUrl: string;
 };
 
 export const Route = createFileRoute("/(auth)/auth/callback")({
@@ -24,12 +34,31 @@ export const Route = createFileRoute("/(auth)/auth/callback")({
 });
 
 const AuthCallback = () => {
-	// const params = Route.useSearch();
-	// const { code, state } = params;
-
+	const params = Route.useSearch();
+	const api = ApiClient();
+	const { code } = params;
 	useEffect(() => {
-		// const generate
-	}, []);
+		let ignore = false;
+		const generateTokenAndGetUser = async () => {
+			const user = await api.Post<
+				generateTokenAndGetUserRequest,
+				generateTokenAndGetUserResponse
+			>("/auth/github/token", {
+				code,
+			});
+			// TODO: ユーザー情報を保存する
+			console.log(user);
+			// TODO: tanstack routerのnavigateがあるはず
+			// window.location.href = "/";
+		};
+		if (!ignore) {
+			generateTokenAndGetUser();
+		}
+
+		return () => {
+			ignore = true;
+		};
+	}, [code, api]);
 
 	return (
 		<Box
