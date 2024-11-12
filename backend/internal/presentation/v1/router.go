@@ -2,26 +2,40 @@ package v1
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/RyotaAbe1014/Pastapal/internal/infrastructure/oauth/github"
 	"github.com/labstack/echo/v4"
 )
 
+type GenerateAuthURLResponse struct {
+	AuthURL string `json:"url"`
+}
+
+type GenerateTokenRequest struct {
+	Code string `json:"code"`
+}
+
 func Router(g *echo.Group) {
-	g.GET("/auth/github", func(c echo.Context) error {
+	g.GET("/auth/github/url", func(c echo.Context) error {
 		// 認証URLを生成し、GitHubにリダイレクト
 		authURL, err := github.GenerateAuthURL("state") // TODO: stateはCSRF対策のための値、実際にはランダムな値を設定するのが良い
 		if err != nil {
 			return c.String(http.StatusInternalServerError, err.Error())
 		}
-		return c.Redirect(http.StatusTemporaryRedirect, authURL)
+		return c.JSON(http.StatusOK, GenerateAuthURLResponse{AuthURL: authURL})
 	})
 
 	g.POST("/auth/github/token", func(c echo.Context) error {
 		// GitHubからリダイレクトされてきたときに呼び出される
-		code := c.QueryParam("code")
+		var req GenerateTokenRequest
+		if err := c.Bind(&req); err != nil {
+			return c.String(http.StatusBadRequest, err.Error())
+		}
+
+		code := req.Code
 		if code == "" {
-			return c.String(http.StatusBadRequest, "code is empty")
+			return c.String(http.StatusBadRequest, "code is required")
 		}
 
 		// 認証コードをトークンに交換
@@ -30,7 +44,13 @@ func Router(g *echo.Group) {
 			return c.String(http.StatusInternalServerError, err.Error())
 		}
 
-		return c.JSON(http.StatusOK, token)
+		cookie := new(http.Cookie)
+		cookie.Name = "accessToken"
+		cookie.Value = token.AccessToken
+		cookie.Expires = time.Now().Add(24 * time.Hour)
+		c.SetCookie(cookie)
+
+		return c.String(http.StatusOK, "success")
 	})
 
 	// TODO: 必要なapiをとりあえず定義しているので、実装時に修正する
