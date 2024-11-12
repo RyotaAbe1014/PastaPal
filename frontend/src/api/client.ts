@@ -11,9 +11,7 @@ export const ApiClient = () => {
 		method: string,
 		params?: RequestType,
 	): Promise<ResponseType> => {
-		console.log("request", settings.BaseUrl);
-		const url = new URL(path, settings.BaseUrl);
-		console.log("url", url);
+		const url = `${settings.BaseUrl}${path}`;
 		const options: RequestInit = {
 			...settings,
 			method,
