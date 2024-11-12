@@ -50,13 +50,11 @@ func GetUser(ctx context.Context, accessToken string) (*GitHubUser, error) {
 
 	body, _ := io.ReadAll(resp.Body)
 
-	fmt.Println(string(body))
 	var user GitHubUser
 	if err := json.Unmarshal(body, &user); err != nil {
 		fmt.Println(err)
 		return nil, err
 	}
-	fmt.Printf("%+v\n", user)
 
 	return &user, nil
 }
