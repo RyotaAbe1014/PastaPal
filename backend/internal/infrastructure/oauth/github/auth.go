@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 
 	"golang.org/x/oauth2"
@@ -17,9 +18,9 @@ var OAuth2Config = &oauth2.Config{
 	Endpoint:     github.Endpoint,
 }
 
-type User struct {
-	ID       string
-	Username string
+type GitHubUser struct {
+	Login     string `json:"login"`
+	AvatarUrl string `json:"avatar_url"`
 }
 
 // 認証URLを生成
@@ -39,20 +40,23 @@ func ExchangeCodeForToken(ctx context.Context, code string) (*oauth2.Token, erro
 	return OAuth2Config.Exchange(ctx, code)
 }
 
-func GetUser(ctx context.Context, accessToken string) (*User, error) {
+func GetUser(ctx context.Context, accessToken string) (*GitHubUser, error) {
 	client := OAuth2Config.Client(ctx, &oauth2.Token{AccessToken: accessToken})
 	resp, err := client.Get("https://api.github.com/user")
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(resp)
 	defer resp.Body.Close()
 
-	var user User
-	if err := json.NewDecoder(resp.Body).Decode(&user); err != nil {
+	body, _ := io.ReadAll(resp.Body)
+
+	fmt.Println(string(body))
+	var user GitHubUser
+	if err := json.Unmarshal(body, &user); err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
+	fmt.Printf("%+v\n", user)
 
 	return &user, nil
-
 }
