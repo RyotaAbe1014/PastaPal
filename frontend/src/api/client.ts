@@ -1,9 +1,5 @@
 export const ApiClient = () => {
 	const settings = {
-		withCredentials: true,
-		headers: {
-			"Content-Type": "application/json",
-		},
 		BaseUrl: import.meta.env.VITE_ENV_API_URL,
 	};
 	const request = async <RequestType = undefined, ResponseType = unknown>(
@@ -13,8 +9,12 @@ export const ApiClient = () => {
 	): Promise<ResponseType> => {
 		const url = `${settings.BaseUrl}${path}`;
 		const options: RequestInit = {
-			...settings,
 			method,
+			credentials: "include",
+			mode: "cors",
+			headers: {
+				"Content-Type": "application/json",
+			},
 			body: params ? JSON.stringify(params) : undefined,
 		};
 		const response = await fetch(url, options);
