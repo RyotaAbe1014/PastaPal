@@ -34,19 +34,19 @@ export const Route = createFileRoute("/(auth)/auth/callback")({
 });
 const AuthCallback = () => {
 	const params = Route.useSearch();
-	const navigate = useNavigate({ from: '/login' });
+	const navigate = useNavigate({ from: "/login" });
 	const api = ApiClient();
 	const { code } = params;
 
 	const hasFetched = useRef(false); // 初回実行を記録するフラグ(StrictMode対策)
 
 	const generateTokenAndGetUser = useCallback(async () => {
-		const user = await api.Post<generateTokenAndGetUserRequest, generateTokenAndGetUserResponse>(
-			"/auth/github/token",
-			{ code }
-		);
+		const user = await api.Post<
+			generateTokenAndGetUserRequest,
+			generateTokenAndGetUserResponse
+		>("/auth/github/token", { code });
 		console.log(user);
-		navigate({ to: '/ingredients' });
+		navigate({ to: "/ingredients" });
 	}, [api, code, navigate]);
 
 	useEffect(() => {
