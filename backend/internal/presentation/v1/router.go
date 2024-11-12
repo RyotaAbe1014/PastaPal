@@ -16,6 +16,11 @@ type GenerateTokenRequest struct {
 	Code string `json:"code"`
 }
 
+type GenerateTokenResponse struct {
+	userID   string `json:"userID"`
+	username string `json:"username"`
+}
+
 func Router(g *echo.Group) {
 	g.GET("/auth/github/url", func(c echo.Context) error {
 		// 認証URLを生成し、GitHubにリダイレクト
@@ -50,7 +55,13 @@ func Router(g *echo.Group) {
 		cookie.Expires = time.Now().Add(24 * time.Hour)
 		c.SetCookie(cookie)
 
-		return c.String(http.StatusOK, "success")
+		user, err := github.GetUser(c.Request().Context(), token.AccessToken)
+
+		if err != nil || user == nil {
+			return c.String(http.StatusInternalServerError, err.Error())
+		}
+
+		return c.JSON(http.StatusOK, GenerateTokenResponse{userID: user.ID, username: user.Username})
 	})
 
 	// TODO: 必要なapiをとりあえず定義しているので、実装時に修正する

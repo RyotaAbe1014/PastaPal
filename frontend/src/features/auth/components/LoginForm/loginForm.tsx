@@ -10,7 +10,9 @@ type GetGitHubUrlResponse = {
 export const LoginForm = () => {
 	const api = ApiClient();
 	const handleClick = async () => {
-		const response = await api.Get<undefined, GetGitHubUrlResponse>("/auth/github/url");
+		const response = await api.Get<undefined, GetGitHubUrlResponse>(
+			"/auth/github/url",
+		);
 		window.location.href = response.url;
 	};
 	return (
