@@ -34,7 +34,7 @@ export const Route = createFileRoute("/(auth)/auth/callback")({
 });
 const AuthCallback = () => {
 	const params = Route.useSearch();
-	const navigate = useNavigate({ from: "/login" });
+	const navigate = useNavigate();
 	const api = ApiClient();
 	const { code } = params;
 
