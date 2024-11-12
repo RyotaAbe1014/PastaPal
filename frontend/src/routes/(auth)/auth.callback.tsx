@@ -4,8 +4,8 @@ import {
 	ProgressCircleRoot,
 } from "@/components/ui/progress-circle";
 import { Box, Heading } from "@chakra-ui/react";
-import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useCallback, useEffect, useRef } from "react";
 
 type AuthCallbackProps = {
 	code: string;
@@ -32,33 +32,29 @@ export const Route = createFileRoute("/(auth)/auth/callback")({
 	},
 	component: () => <AuthCallback />,
 });
-
 const AuthCallback = () => {
 	const params = Route.useSearch();
+	const navigate = useNavigate({ from: '/login' });
 	const api = ApiClient();
 	const { code } = params;
-	useEffect(() => {
-		let ignore = false;
-		const generateTokenAndGetUser = async () => {
-			const user = await api.Post<
-				generateTokenAndGetUserRequest,
-				generateTokenAndGetUserResponse
-			>("/auth/github/token", {
-				code,
-			});
-			// TODO: ユーザー情報を保存する
-			console.log(user);
-			// TODO: tanstack routerのnavigateがあるはず
-			// window.location.href = "/";
-		};
-		if (!ignore) {
-			generateTokenAndGetUser();
-		}
 
-		return () => {
-			ignore = true;
-		};
-	}, [code, api]);
+	const hasFetched = useRef(false); // 初回実行を記録するフラグ(StrictMode対策)
+
+	const generateTokenAndGetUser = useCallback(async () => {
+		const user = await api.Post<generateTokenAndGetUserRequest, generateTokenAndGetUserResponse>(
+			"/auth/github/token",
+			{ code }
+		);
+		console.log(user);
+		navigate({ to: '/ingredients' });
+	}, [api, code, navigate]);
+
+	useEffect(() => {
+		if (!hasFetched.current) {
+			generateTokenAndGetUser();
+			hasFetched.current = true; // 初回実行を記録
+		}
+	}, [generateTokenAndGetUser]);
 
 	return (
 		<Box
