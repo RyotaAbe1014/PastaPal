@@ -78,6 +78,7 @@ func Router(g *echo.Group) {
 
 		return c.JSON(http.StatusOK, GenerateTokenResponse{UserID: user.Login, AvatarUrl: user.AvatarUrl})
 	})
+
 	g.GET("/auth/github/status", func(c echo.Context) error {
 		// cookieに保存されているtokenを取得できれば認証済みとする
 		cookie, err := c.Cookie("accessToken")
