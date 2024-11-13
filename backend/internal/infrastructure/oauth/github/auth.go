@@ -28,7 +28,6 @@ func GenerateAuthURL(state string) (string, error) {
 	if state == "" {
 		return "", fmt.Errorf("ステートが空です")
 	}
-	fmt.Println("aaaa", OAuth2Config.ClientID)
 	return OAuth2Config.AuthCodeURL(state, oauth2.AccessTypeOnline), nil
 }
 

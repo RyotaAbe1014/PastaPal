@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/RyotaAbe1014/Pastapal/internal/infrastructure/oauth/github"
@@ -58,8 +57,6 @@ func Router(g *echo.Group) {
 		if err != nil || user == nil {
 			return c.String(http.StatusInternalServerError, err.Error())
 		}
-
-		fmt.Printf("%+v\n", user.Login)
 
 		// ここでRyotaAbe1014でないと認証エラーを返すようにする
 		if user.Login != "RyotaAbe1014" {
