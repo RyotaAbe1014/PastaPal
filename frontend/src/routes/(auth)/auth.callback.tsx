@@ -45,7 +45,7 @@ const AuthCallback = () => {
 			generateTokenAndGetUserRequest,
 			generateTokenAndGetUserResponse
 		>("/auth/github/token", { code });
-		console.log(user);
+		localStorage.setItem("userId", JSON.stringify(user.userId));
 		navigate({ to: "/ingredients" });
 	}, [api, code, navigate]);
 
