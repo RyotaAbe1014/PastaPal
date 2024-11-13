@@ -100,7 +100,7 @@ func Router(g *echo.Group) {
 		}
 		c.SetCookie(cookie)
 
-		return c.String(http.StatusOK, "")
+		return c.JSON(http.StatusOK, AuthStatusResponse{IsAuthenticated: false})
 	})
 
 	// TODO: 必要なapiをとりあえず定義しているので、実装時に修正する
