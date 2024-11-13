@@ -21,6 +21,10 @@ type GenerateTokenResponse struct {
 	AvatarUrl string `json:"avatarUrl"`
 }
 
+type AuthStatusResponse struct {
+	IsAuthenticated bool `json:"isAuthenticated"`
+}
+
 func Router(g *echo.Group) {
 	g.GET("/auth/github/url", func(c echo.Context) error {
 		// 認証URLを生成し、GitHubにリダイレクト
@@ -73,6 +77,29 @@ func Router(g *echo.Group) {
 		c.SetCookie(cookie)
 
 		return c.JSON(http.StatusOK, GenerateTokenResponse{UserID: user.Login, AvatarUrl: user.AvatarUrl})
+	})
+	g.GET("/auth/github/status", func(c echo.Context) error {
+		// cookieに保存されているtokenを取得できれば認証済みとする
+		cookie, err := c.Cookie("accessToken")
+		if err != nil || cookie.Value == "" {
+			return c.JSON(http.StatusOK, AuthStatusResponse{IsAuthenticated: false})
+		}
+
+		return c.JSON(http.StatusOK, AuthStatusResponse{IsAuthenticated: true})
+	})
+
+	g.POST("/auth/github/logout", func(c echo.Context) error {
+		cookie := &http.Cookie{
+			Name:     "accessToken",
+			Value:    "",
+			HttpOnly: true,
+			Secure:   true,
+			SameSite: http.SameSiteLaxMode,
+			Path:     "/",
+		}
+		c.SetCookie(cookie)
+
+		return c.String(http.StatusOK, "")
 	})
 
 	// TODO: 必要なapiをとりあえず定義しているので、実装時に修正する
