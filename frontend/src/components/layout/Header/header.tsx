@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { Box, Heading, IconButton } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 import { Link } from "@tanstack/react-router";
-import { VscAccount } from "react-icons/vsc";
+import { AccountButton } from "../AccountButton";
 
 export type HeaderProps = {
 	path: string;
@@ -57,9 +57,7 @@ export const Header = ({ path }: HeaderProps) => {
 					</Link>
 				</Box>
 				<Box mr={4}>
-					<IconButton rounded="full" aria-label="アカウント" bg="green.600">
-						<VscAccount />
-					</IconButton>
+					<AccountButton />
 				</Box>
 			</Box>
 		</Box>
