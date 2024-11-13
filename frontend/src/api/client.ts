@@ -44,15 +44,15 @@ export const ApiClient = () => {
 	};
 	const Post = <RequestType = undefined, ResponseType = unknown>(
 		path: string,
-		params: RequestType,
+		params?: RequestType,
 	): Promise<ResponseType> => request(path, "POST", params);
 	const Put = <RequestType = undefined, ResponseType = unknown>(
 		path: string,
-		params: RequestType,
+		params?: RequestType,
 	): Promise<ResponseType> => request(path, "PUT", params);
 	const Delete = <RequestType = undefined, ResponseType = unknown>(
 		path: string,
-		params: RequestType,
+		params?: RequestType,
 	): Promise<ResponseType> => request(path, "DELETE", params);
 
 	return {
