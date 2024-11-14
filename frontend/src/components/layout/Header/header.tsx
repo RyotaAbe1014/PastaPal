@@ -28,8 +28,8 @@ export const Header = ({ path }: HeaderProps) => {
 				<Box mr={4}>
 					{/* ダッシュボード遷移ボタン */}
 					<Button
-						bg={getButtonBackGroundColor(path, "dashboard")}
-						color={getButtonTextColor(path, "dashboard")}
+						bg={getButtonBackGroundColor(path, "/dashboard")}
+						color={getButtonTextColor(path, "/dashboard")}
 					>
 						ダッシュボード
 					</Button>
