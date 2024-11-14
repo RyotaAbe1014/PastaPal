@@ -17,10 +17,7 @@ beforeEach(() => {
 
 describe("Header Component", () => {
 	it("renders the Header component with dashboard path", () => {
-		render(
-			<Header path="/recipes" />,
-			{ wrapper: Wrapper },
-		);
+		render(<Header path="/recipes" />, { wrapper: Wrapper });
 		expect(screen.getByText("ダッシュボード")).toBeInTheDocument();
 		expect(screen.getByText("レシピ")).toBeInTheDocument();
 		expect(screen.getByText("食材")).toBeInTheDocument();
