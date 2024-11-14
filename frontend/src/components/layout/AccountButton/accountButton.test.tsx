@@ -1,13 +1,17 @@
+import { server } from "@/libs/test/server";
 import { Wrapper } from "@/libs/test/wrapper";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { useNavigate } from "@tanstack/react-router";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { http, HttpResponse } from "msw";
 import { act } from "react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { type Mock, beforeEach, describe, expect, it, vi } from "vitest";
 import { AccountButton } from "./accountButton";
 
-vi.mock("@/api/client");
 vi.mock("@tanstack/react-router", () => ({
 	useNavigate: vi.fn(),
 }));
+
+const mockedUseNavigate = useNavigate as Mock;
 
 describe("AccountButton", () => {
 	beforeEach(() => {
@@ -34,6 +38,7 @@ describe("AccountButton", () => {
 			value: localStorageMock,
 		});
 	});
+
 	it("アカウントボタンが表示されること", () => {
 		render(<AccountButton />, { wrapper: Wrapper });
 		expect(screen.getByLabelText("アカウント")).toBeInTheDocument();
@@ -49,18 +54,27 @@ describe("AccountButton", () => {
 		expect(screen.getByText("ユーザー名: testUser")).toBeInTheDocument();
 	});
 
-	// it("logs out the user when the logout button is clicked", async () => {
-	//   const mockNavigate = vi.fn();
-	//   const mockPost = vi.fn().mockResolvedValue({});
-	//   (useNavigate as vi.Mock).mockReturnValue(mockNavigate);
-	//   (ApiClient as vi.Mock).mockReturnValue({ Post: mockPost });
+	it("ログアウトボタンクリックでログアウト処理が実行されること", async () => {
+		const mockedNavigate = vi.fn();
+		mockedUseNavigate.mockReturnValue(mockedNavigate);
+		server.use(
+			http.post("http://localhost:8000/api/v1/auth/github/logout", () => {
+				return HttpResponse.json({ isAuthenticated: false });
+			}),
+		);
 
-	//   render(<AccountButton />);
-	//   fireEvent.click(screen.getByLabelText("アカウント"));
-	//   fireEvent.click(screen.getByText("ログアウト"));
+		localStorage.setItem("userId", "testUser");
 
-	//   expect(localStorage.getItem("userId")).toBeNull();
-	//   expect(mockPost).toHaveBeenCalledWith("/auth/github/logout");
-	//   expect(mockNavigate).toHaveBeenCalledWith({ to: "/login" });
-	// });
+		render(<AccountButton />, { wrapper: Wrapper });
+
+		await act(async () => {
+			fireEvent.click(screen.getByLabelText("アカウント"));
+		});
+
+		await waitFor(() => {
+			fireEvent.click(screen.getByRole("button", { name: "ログアウト" }));
+		});
+
+		expect(mockedNavigate).toHaveBeenCalledWith({ to: "/login" });
+	});
 });
