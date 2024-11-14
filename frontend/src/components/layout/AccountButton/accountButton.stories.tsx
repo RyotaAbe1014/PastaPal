@@ -9,6 +9,6 @@ const meta: Meta<typeof AccountButton> = {
 export default meta;
 type Story = StoryObj<typeof AccountButton>;
 
-export const Dashboard: Story = {
+export const Default: Story = {
 	args: {},
 };
