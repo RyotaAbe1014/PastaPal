@@ -1,5 +1,4 @@
 import { Wrapper } from "@/libs/test/wrapper";
-import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import { vi } from "vitest";
@@ -19,9 +18,7 @@ beforeEach(() => {
 describe("Header Component", () => {
 	it("renders the Header component with dashboard path", () => {
 		render(
-			<ChakraProvider value={defaultSystem}>
-				<Header path="/recipes" />
-			</ChakraProvider>,
+			<Header path="/recipes" />,
 			{ wrapper: Wrapper },
 		);
 		expect(screen.getByText("ダッシュボード")).toBeInTheDocument();
