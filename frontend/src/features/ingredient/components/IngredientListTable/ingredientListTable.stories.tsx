@@ -3,7 +3,7 @@ import { IngredientListTable } from ".";
 
 const meta: Meta<typeof IngredientListTable> = {
 	component: IngredientListTable,
-	title: "Components/Layout/IngredientListTable",
+	title: "Components/Ingredient/IngredientListTable",
 };
 
 export default meta;

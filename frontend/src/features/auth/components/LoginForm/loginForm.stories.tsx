@@ -3,12 +3,11 @@ import { LoginForm } from ".";
 
 const meta: Meta<typeof LoginForm> = {
 	component: LoginForm,
-	title: "Components/Layout/LoginForm",
+	title: "Components/Auth/LoginForm",
 };
 
 export default meta;
 type Story = StoryObj<typeof LoginForm>;
 
 export const Default: Story = {
-	args: {},
 };

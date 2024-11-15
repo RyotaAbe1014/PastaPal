@@ -3,7 +3,7 @@ import { IngredientCategoryCreateForm } from ".";
 
 const meta: Meta<typeof IngredientCategoryCreateForm> = {
 	component: IngredientCategoryCreateForm,
-	title: "Components/Layout/IngredientCategoryCreateForm",
+	title: "Components/Ingredient/IngredientCategoryCreateForm",
 };
 
 export default meta;
