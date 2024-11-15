@@ -9,5 +9,4 @@ const meta: Meta<typeof LoginForm> = {
 export default meta;
 type Story = StoryObj<typeof LoginForm>;
 
-export const Default: Story = {
-};
+export const Default: Story = {};
