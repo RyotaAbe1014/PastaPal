@@ -23,15 +23,8 @@ services:
       - pastapal_network
     volumes:
       - ../internal/infrastructure/postgres/db/migrations/:/migrations
-    command:
-      [
-        "-path",
-        "/migrations",
-        "-database",
-        "postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable",
-        "up",
-      ]
     tty: true
+    entrypoint: ["tail", "-f", "/dev/null"]
     depends_on:
       - postgres
 
