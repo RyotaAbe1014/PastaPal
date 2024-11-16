@@ -1,13 +1,13 @@
 # PastaPal Backend
 
 ## 環境構築
-build/ディレクトリに移動してください。
+build/に移動して実行してください。
 ```bash
 docker-compose up -d
 ```
 
 ## コマンド
-Makefileを参照してください。
+build/にあるMakefileを参照してください。
 ```bash
 make help
 ```
