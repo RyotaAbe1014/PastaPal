@@ -9,11 +9,31 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ../.:/app # ホストのカレントディレクトリを/appにマウント
+      - ../.:/app
     working_dir: /app
-    tty: true # エラー出力などが必要な場合にコンテナが終了しないようにする
+    tty: true # コンテナ終了防止
     networks:
       - pastapal_network
+    depends_on:
+      - postgres
+
+  migrate:
+    image: migrate/migrate
+    networks:
+      - pastapal_network
+    volumes:
+      - ../internal/infrastructure/postgres/db/migrations/:/migrations
+    command:
+      [
+        "-path",
+        "/migrations",
+        "-database",
+        "postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable",
+        "up",
+      ]
+    tty: true
+    depends_on:
+      - postgres
 
   postgres:
     image: postgres:16
@@ -24,9 +44,14 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: "postgres"
+    volumes:
+      - db_data:/var/lib/postgresql/data
     networks:
       - pastapal_network
 
 networks:
   pastapal_network:
     driver: bridge
+
+volumes:
+  db_data:
