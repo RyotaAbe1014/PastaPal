@@ -2,18 +2,34 @@ package ingredient_categories
 
 import "github.com/labstack/echo/v4"
 
-func CreateIngredientCategory(c echo.Context) error {
+type IngredientCategoryHandler interface {
+	CreateIngredientCategory(c echo.Context) error
+	GetIngredientCategories(c echo.Context) error
+	UpdateIngredientCategory(c echo.Context) error
+	DeleteIngredientCategory(c echo.Context) error
+}
+
+type ingredientCategoryHandler struct {
+	// ingredientCategoryUseCase IngredientCategoryUseCase
+}
+
+// constructorを使用して、controllerの構造体を生成
+func New() IngredientCategoryHandler {
+	return &ingredientCategoryHandler{}
+}
+
+func (h *ingredientCategoryHandler) CreateIngredientCategory(c echo.Context) error {
 	return nil
 }
 
-func GetIngredientCategories(c echo.Context) error {
+func (h *ingredientCategoryHandler) GetIngredientCategories(c echo.Context) error {
 	return nil
 }
 
-func UpdateIngredientCategory(c echo.Context) error {
+func (h *ingredientCategoryHandler) UpdateIngredientCategory(c echo.Context) error {
 	return nil
 }
 
-func DeleteIngredientCategory(c echo.Context) error {
+func (h *ingredientCategoryHandler) DeleteIngredientCategory(c echo.Context) error {
 	return nil
 }
