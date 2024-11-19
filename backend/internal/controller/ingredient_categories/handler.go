@@ -1,29 +1,30 @@
 package ingredient_categories
 
 import (
+	"context"
+
 	"github.com/RyotaAbe1014/Pastapal/internal/service/ingredient_categories"
-	"github.com/labstack/echo/v4"
 )
 
-type IngredientCategoryHandler interface {
-	CreateIngredientCategory(c echo.Context) (CreateIngredientCategoryResponse, error)
-	GetIngredientCategories(c echo.Context) error
-	UpdateIngredientCategory(c echo.Context) error
-	DeleteIngredientCategory(c echo.Context) error
+type IngredientCategoryController interface {
+	CreateIngredientCategory(ctx context.Context, request CreateIngredientCategoryRequest) (CreateIngredientCategoryResponse, error)
+	GetIngredientCategories(ctx context.Context) error
+	UpdateIngredientCategory(ctx context.Context) error
+	DeleteIngredientCategory(ctx context.Context) error
 }
 
-type ingredientCategoryHandler struct {
+type ingredientCategoryController struct {
 	ingredientCategoryService ingredient_categories.IngredientCategoryService
 }
 
 // constructorを使用して、controllerの構造体を生成
-func New(is ingredient_categories.IngredientCategoryService) IngredientCategoryHandler {
-	return &ingredientCategoryHandler{ingredientCategoryService: is}
+func NewIngredientCategoryController(is ingredient_categories.IngredientCategoryService) IngredientCategoryController {
+	return &ingredientCategoryController{ingredientCategoryService: is}
 }
 
-func (h *ingredientCategoryHandler) CreateIngredientCategory(c echo.Context) (CreateIngredientCategoryResponse, error) {
-	ingredientCategory, err := h.ingredientCategoryService.CreateIngredientCategory(ingredient_categories.CreateIngredientCategoryRequestDTO{
-		Name: c.FormValue("name"),
+func (h *ingredientCategoryController) CreateIngredientCategory(ctx context.Context, request CreateIngredientCategoryRequest) (CreateIngredientCategoryResponse, error) {
+	ingredientCategory, err := h.ingredientCategoryService.CreateIngredientCategory(ctx, ingredient_categories.CreateIngredientCategoryRequestDTO{
+		Name: request.Name,
 	})
 
 	if err != nil {
@@ -36,14 +37,14 @@ func (h *ingredientCategoryHandler) CreateIngredientCategory(c echo.Context) (Cr
 	}, nil
 }
 
-func (h *ingredientCategoryHandler) GetIngredientCategories(c echo.Context) error {
+func (h *ingredientCategoryController) GetIngredientCategories(ctx context.Context) error {
 	return nil
 }
 
-func (h *ingredientCategoryHandler) UpdateIngredientCategory(c echo.Context) error {
+func (h *ingredientCategoryController) UpdateIngredientCategory(ctx context.Context) error {
 	return nil
 }
 
-func (h *ingredientCategoryHandler) DeleteIngredientCategory(c echo.Context) error {
+func (h *ingredientCategoryController) DeleteIngredientCategory(ctx context.Context) error {
 	return nil
 }
