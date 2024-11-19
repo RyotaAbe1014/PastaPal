@@ -8,9 +8,10 @@ WHERE id = $1 LIMIT 1;
 
 -- name: CreateIngredientCategory :one
 INSERT INTO ingredient_categories (
-  name
+  id, name
 ) VALUES (
-  $1
+  $1,
+  $2
 )
 RETURNING *;
 
