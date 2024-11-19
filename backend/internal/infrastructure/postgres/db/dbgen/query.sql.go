@@ -40,15 +40,21 @@ func (q *Queries) CreateIngredient(ctx context.Context, arg CreateIngredientPara
 
 const createIngredientCategory = `-- name: CreateIngredientCategory :one
 INSERT INTO ingredient_categories (
-  name
+  id, name
 ) VALUES (
-  $1
+  $1,
+  $2
 )
 RETURNING id, name, created_at, updated_at
 `
 
-func (q *Queries) CreateIngredientCategory(ctx context.Context, name string) (IngredientCategory, error) {
-	row := q.db.QueryRow(ctx, createIngredientCategory, name)
+type CreateIngredientCategoryParams struct {
+	ID   pgtype.UUID
+	Name string
+}
+
+func (q *Queries) CreateIngredientCategory(ctx context.Context, arg CreateIngredientCategoryParams) (IngredientCategory, error) {
+	row := q.db.QueryRow(ctx, createIngredientCategory, arg.ID, arg.Name)
 	var i IngredientCategory
 	err := row.Scan(
 		&i.ID,
