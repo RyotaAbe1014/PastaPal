@@ -1,6 +1,7 @@
 package ingredient_categories
 
 import (
+	"context"
 	"errors"
 
 	"github.com/RyotaAbe1014/Pastapal/internal/domain/ingredient_categories"
@@ -12,11 +13,11 @@ type CreateIngredientCategoryRequestDTO struct {
 }
 
 type IngredientCategoryService interface {
-	CreateIngredientCategory(requestDTO CreateIngredientCategoryRequestDTO) (ingredient_categories.IngredientCategory, error)
-	GetIngredientCategoryByID(id int) (ingredient_categories.IngredientCategory, error)
-	GetAllIngredientCategories() ([]ingredient_categories.IngredientCategory, error)
-	UpdateIngredientCategory(id int, requestDTO CreateIngredientCategoryRequestDTO) (ingredient_categories.IngredientCategory, error)
-	DeleteIngredientCategory(id int) error
+	CreateIngredientCategory(ctx context.Context, requestDTO CreateIngredientCategoryRequestDTO) (ingredient_categories.IngredientCategory, error)
+	GetIngredientCategoryByID(ctx context.Context, id int) (ingredient_categories.IngredientCategory, error)
+	GetAllIngredientCategories(ctx context.Context) ([]ingredient_categories.IngredientCategory, error)
+	UpdateIngredientCategory(ctx context.Context, id int, requestDTO CreateIngredientCategoryRequestDTO) (ingredient_categories.IngredientCategory, error)
+	DeleteIngredientCategory(ctx context.Context, id int) error
 }
 
 type ingredientCategoryService struct {
@@ -27,7 +28,7 @@ func NewIngredientCategoryService(ir ingredient_categories.IIngredientCategoryRe
 	return &ingredientCategoryService{ir: ir}
 }
 
-func (is *ingredientCategoryService) CreateIngredientCategory(requestDTO CreateIngredientCategoryRequestDTO) (ingredient_categories.IngredientCategory, error) {
+func (is *ingredientCategoryService) CreateIngredientCategory(ctx context.Context, requestDTO CreateIngredientCategoryRequestDTO) (ingredient_categories.IngredientCategory, error) {
 	id := uuid.New().String()
 	ingredientCategory, err := ingredient_categories.NewIngredientCategory(id, requestDTO.Name)
 
@@ -36,24 +37,24 @@ func (is *ingredientCategoryService) CreateIngredientCategory(requestDTO CreateI
 			errors.New("failed to create ingredient category")
 	}
 
-	is.ir.CreateIngredientCategory(ingredientCategory)
+	is.ir.CreateIngredientCategory(ctx, ingredientCategory)
 
 	return ingredientCategory, nil
 
 }
 
-func (is *ingredientCategoryService) GetIngredientCategoryByID(id int) (ingredient_categories.IngredientCategory, error) {
+func (is *ingredientCategoryService) GetIngredientCategoryByID(ctx context.Context, id int) (ingredient_categories.IngredientCategory, error) {
 	panic("implement me")
 }
 
-func (is *ingredientCategoryService) GetAllIngredientCategories() ([]ingredient_categories.IngredientCategory, error) {
+func (is *ingredientCategoryService) GetAllIngredientCategories(ctx context.Context) ([]ingredient_categories.IngredientCategory, error) {
 	panic("implement me")
 }
 
-func (is *ingredientCategoryService) UpdateIngredientCategory(id int, requestDTO CreateIngredientCategoryRequestDTO) (ingredient_categories.IngredientCategory, error) {
+func (is *ingredientCategoryService) UpdateIngredientCategory(ctx context.Context, id int, requestDTO CreateIngredientCategoryRequestDTO) (ingredient_categories.IngredientCategory, error) {
 	panic("implement me")
 }
 
-func (is *ingredientCategoryService) DeleteIngredientCategory(id int) error {
+func (is *ingredientCategoryService) DeleteIngredientCategory(ctx context.Context, id int) error {
 	panic("implement me")
 }
