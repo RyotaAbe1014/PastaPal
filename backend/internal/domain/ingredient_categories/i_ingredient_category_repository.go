@@ -1,10 +1,12 @@
 package ingredient_categories
 
+import "context"
+
 // 抽象クラス
 type IIngredientCategoryRepository interface {
-	CreateIngredientCategory(ingredientCategory IngredientCategory) (IngredientCategory, error)
-	GetIngredientCategoryByID(id int) (IngredientCategory, error)
-	GetAllIngredientCategories() ([]IngredientCategory, error)
-	UpdateIngredientCategory(ingredientCategory IngredientCategory) (IngredientCategory, error)
-	DeleteIngredientCategory(id int) error
+	CreateIngredientCategory(ctx context.Context, ingredientCategory IngredientCategory) (IngredientCategory, error)
+	GetIngredientCategoryByID(ctx context.Context, id int) (IngredientCategory, error)
+	GetAllIngredientCategories(ctx context.Context) ([]IngredientCategory, error)
+	UpdateIngredientCategory(ctx context.Context, ingredientCategory IngredientCategory) (IngredientCategory, error)
+	DeleteIngredientCategory(ctx context.Context, id int) error
 }
