@@ -3,7 +3,11 @@ package v1
 import (
 	"net/http"
 
+	ingredient_categories_controller "github.com/RyotaAbe1014/Pastapal/internal/controller/ingredient_categories"
 	"github.com/RyotaAbe1014/Pastapal/internal/infrastructure/oauth/github"
+	"github.com/RyotaAbe1014/Pastapal/internal/infrastructure/postgres/repository"
+	ingredient_categories_service "github.com/RyotaAbe1014/Pastapal/internal/service/ingredient_categories"
+
 	"github.com/labstack/echo/v4"
 )
 
@@ -106,11 +110,31 @@ func Router(g *echo.Group) {
 
 	// 食材種別管理
 	g.POST("/ingredient-categories", func(c echo.Context) error {
-		return c.String(http.StatusOK, "ingredient-categories")
+		ctx := c.Request().Context()
+		ingredientCategoryRepository := repository.NewIngredientCategoryRepository()
+		ingredientCategoryService := ingredient_categories_service.NewIngredientCategoryService(ingredientCategoryRepository)
+		ingredientCategoryController := ingredient_categories_controller.NewIngredientCategoryController(ingredientCategoryService)
+
+		req := new(ingredient_categories_controller.CreateIngredientCategoryRequest)
+		if err := c.Bind(req); err != nil {
+			return c.JSON(http.StatusBadRequest, err.Error())
+		}
+
+		result, err := ingredientCategoryController.CreateIngredientCategory(ctx, ingredient_categories_controller.CreateIngredientCategoryRequest{
+			Name: req.Name,
+		})
+
+		if err != nil {
+			return c.String(http.StatusInternalServerError, err.Error())
+		}
+
+		return c.JSON(http.StatusOK, result)
 	})
+
 	g.GET(("/ingredient-categories"), func(c echo.Context) error {
 		return c.String(http.StatusOK, "ingredient-categories")
 	})
+
 	g.GET("/ingredient-categories/:id", func(c echo.Context) error {
 		return c.String(http.StatusOK, "ingredient-categories")
 	})
@@ -127,6 +151,7 @@ func Router(g *echo.Group) {
 	g.GET(("/ingredients"), func(c echo.Context) error {
 		return c.String(http.StatusOK, "ingredients")
 	})
+
 	g.GET(("/ingredients/:id"), func(c echo.Context) error {
 		return c.String(http.StatusOK, "ingredients")
 	})
@@ -147,15 +172,19 @@ func Router(g *echo.Group) {
 	g.POST("/recipes", func(c echo.Context) error {
 		return c.String(http.StatusOK, "resipes")
 	})
+
 	g.GET("/recipes", func(c echo.Context) error {
 		return c.String(http.StatusOK, "resipes")
 	})
+
 	g.GET("/recipes/:id", func(c echo.Context) error {
 		return c.String(http.StatusOK, "resipes")
 	})
+
 	g.PUT("/recipes/:id", func(c echo.Context) error {
 		return c.String(http.StatusOK, "resipes")
 	})
+
 	g.DELETE("/recipes/:id", func(c echo.Context) error {
 		return c.String(http.StatusOK, "resipes")
 	})
