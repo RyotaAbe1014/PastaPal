@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"sync"
+	"time"
 
 	"github.com/RyotaAbe1014/Pastapal/internal/infrastructure/postgres/db/dbgen"
 	"github.com/RyotaAbe1014/Pastapal/pkg/get_env"
@@ -13,8 +14,8 @@ import (
 var (
 	dbName     = get_env.Getenv("POSTGRES_DB", "postgres")
 	dbUser     = get_env.Getenv("POSTGRES_USER", "postgres")
-	dbPassword = get_env.Getenv("POSTGRES_PASSWORD", "password")
-	dbHost     = get_env.Getenv("POSTGRES_HOST", "localhost")
+	dbPassword = get_env.Getenv("POSTGRES_PASSWORD", "postgres")
+	dbHost     = get_env.Getenv("POSTGRES_HOST", "postgres")
 	dbPort     = get_env.Getenv("POSTGRES_PORT", "5432")
 )
 
@@ -57,12 +58,21 @@ func NewMainDB() {
 }
 
 func createConnection(ctx context.Context) (*pgx.Conn, error) {
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", dbUser, dbPassword, dbHost, dbPort, dbName)
-	conn, err := pgx.Connect(ctx, connStr)
-	if err != nil {
-		return nil, fmt.Errorf("failed to connect to database: %w", err)
+	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", dbUser, dbPassword, dbHost, dbPort, dbName)
+	maxRetries := 5
+	delay := 2 * time.Second
+
+	for i := 0; i < maxRetries; i++ {
+		conn, err := pgx.Connect(ctx, connStr)
+		if err == nil {
+			return conn, nil
+		}
+
+		fmt.Printf("Database not ready, retrying in %v... (%d/%d)\n", delay, i+1, maxRetries)
+		time.Sleep(delay)
 	}
-	return conn, nil
+
+	return nil, fmt.Errorf("failed to connect to database after %d retries", maxRetries)
 }
 
 func getQueries(ctx context.Context) (*dbgen.Queries, *pgx.Conn, error) {
