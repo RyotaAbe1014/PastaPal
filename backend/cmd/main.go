@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 
+	db "github.com/RyotaAbe1014/Pastapal/internal/infrastructure/postgres"
 	"github.com/RyotaAbe1014/Pastapal/internal/presentation/settings"
 	v1Router "github.com/RyotaAbe1014/Pastapal/internal/presentation/v1"
 	"github.com/labstack/echo/v4"
@@ -10,8 +11,9 @@ import (
 
 func main() {
 	e := echo.New()
-	// settings.CorsMiddleware(e)
 	settings.CorsMiddleware(e)
+
+	db.NewMainDB()
 
 	e.GET("/health", func(c echo.Context) error {
 		return c.String(http.StatusOK, "True")
