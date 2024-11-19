@@ -44,7 +44,12 @@ func (r *IngredientCategoryRepository) CreateIngredientCategory(ingredientCatego
 		return ingredient_categories.IngredientCategory{}, err
 	}
 
-	return ingredient_categories.NewIngredientCategory(result.ID.String, result.Name), nil
+	newIngredientCategory, err := ingredient_categories.NewIngredientCategory(uuid.UUID(result.ID.Bytes).String(), result.Name)
+	if err != nil {
+		return ingredient_categories.IngredientCategory{}, err
+	}
+
+	return newIngredientCategory, nil
 }
 
 func (r *IngredientCategoryRepository) GetIngredientCategoryByID(id int) (ingredient_categories.IngredientCategory, error) {

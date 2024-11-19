@@ -20,7 +20,7 @@ type IngredientCategoryService interface {
 }
 
 type ingredientCategoryService struct {
-	ir ingredient_categories.IIngredientCategoryRepository
+	ir ingredient_categories.IIngredientCategoryRepository // 抽象リポジトリ
 }
 
 func NewIngredientCategoryService(ir ingredient_categories.IIngredientCategoryRepository) IngredientCategoryService {
