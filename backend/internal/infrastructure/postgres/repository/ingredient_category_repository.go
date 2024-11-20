@@ -49,8 +49,23 @@ func (r *IngredientCategoryRepository) GetIngredientCategoryByID(ctx context.Con
 	return ingredient_categories.IngredientCategory{}, nil
 }
 
-func (r *IngredientCategoryRepository) GetAllIngredientCategories(ctx context.Context) ([]ingredient_categories.IngredientCategory, error) {
-	return []ingredient_categories.IngredientCategory{}, nil
+func (r *IngredientCategoryRepository) GetIngredientCategories(ctx context.Context) ([]ingredient_categories.IngredientCategory, error) {
+	query := db.GetQuery(ctx)
+	result, err := query.ListIngredientsCategory(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var ingredientCategories []ingredient_categories.IngredientCategory
+	for _, ingredientCategory := range result {
+		newIngredientCategory, err := ingredient_categories.NewIngredientCategory(uuid.UUID(ingredientCategory.ID.Bytes).String(), ingredientCategory.Name)
+		if err != nil {
+			return nil, err
+		}
+		ingredientCategories = append(ingredientCategories, newIngredientCategory)
+	}
+
+	return ingredientCategories, nil
 }
 
 func (r *IngredientCategoryRepository) UpdateIngredientCategory(ctx context.Context, ingredientCategory ingredient_categories.IngredientCategory) (ingredient_categories.IngredientCategory, error) {
