@@ -1,6 +1,6 @@
 import { ApiClient } from "@/api/client";
-import { GenerateTokenAndGetUserRequest } from "@/api/types/generateTokenAndGetUserRequest";
-import { GenerateTokenAndGetUserResponse } from "@/api/types/generateTokenAndGetUserResponse";
+import type { GenerateTokenAndGetUserRequest } from "@/api/types/generateTokenAndGetUserRequest";
+import type { GenerateTokenAndGetUserResponse } from "@/api/types/generateTokenAndGetUserResponse";
 import {
 	ProgressCircleRing,
 	ProgressCircleRoot,

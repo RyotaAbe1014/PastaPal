@@ -1,8 +1,7 @@
 import { ApiClient } from "@/api/client";
-import { AuthStatusResponse } from "@/api/types/authStatusResponse";
+import type { AuthStatusResponse } from "@/api/types/authStatusResponse";
 import { BaseLayout } from "@/components/layout/BaseLayout";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
-
 
 export const Route = createFileRoute("/_app")({
 	component: AppLayout,
