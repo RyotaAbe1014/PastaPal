@@ -1,4 +1,6 @@
 import { ApiClient } from "@/api/client";
+import { GenerateTokenAndGetUserRequest } from "@/api/types/generateTokenAndGetUserRequest";
+import { GenerateTokenAndGetUserResponse } from "@/api/types/generateTokenAndGetUserResponse";
 import {
 	ProgressCircleRing,
 	ProgressCircleRoot,
@@ -10,15 +12,6 @@ import { useCallback, useEffect, useRef } from "react";
 type AuthCallbackProps = {
 	code: string;
 	state: string;
-};
-
-type generateTokenAndGetUserRequest = {
-	code: string;
-};
-
-type generateTokenAndGetUserResponse = {
-	userId: string;
-	avatarUrl: string;
 };
 
 export const Route = createFileRoute("/(auth)/auth/callback")({
@@ -42,8 +35,8 @@ const AuthCallback = () => {
 
 	const generateTokenAndGetUser = useCallback(async () => {
 		const user = await api.Post<
-			generateTokenAndGetUserRequest,
-			generateTokenAndGetUserResponse
+			GenerateTokenAndGetUserRequest,
+			GenerateTokenAndGetUserResponse
 		>("/auth/github/token", { code });
 		localStorage.setItem("userId", JSON.stringify(user.userId));
 		navigate({ to: "/ingredients" });

@@ -1,11 +1,8 @@
 import { ApiClient } from "@/api/client";
+import { GetGitHubUrlResponse } from "@/api/types/getGitHubUrlResponse";
 import { Button } from "@/components/ui/button";
 import { Card } from "@chakra-ui/react";
 import { FaGithub } from "react-icons/fa";
-
-type GetGitHubUrlResponse = {
-	url: string;
-};
 
 export const LoginForm = () => {
 	const api = ApiClient();

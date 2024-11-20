@@ -1,10 +1,8 @@
 import { ApiClient } from "@/api/client";
+import { AuthStatusResponse } from "@/api/types/authStatusResponse";
 import { BaseLayout } from "@/components/layout/BaseLayout";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
-type AuthStatusResponse = {
-	isAuthenticated: boolean;
-};
 
 export const Route = createFileRoute("/_app")({
 	component: AppLayout,
