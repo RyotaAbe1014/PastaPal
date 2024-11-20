@@ -15,7 +15,7 @@ type CreateIngredientCategoryRequestDTO struct {
 type IngredientCategoryService interface {
 	CreateIngredientCategory(ctx context.Context, requestDTO CreateIngredientCategoryRequestDTO) (ingredient_categories.IngredientCategory, error)
 	GetIngredientCategoryByID(ctx context.Context, id int) (ingredient_categories.IngredientCategory, error)
-	GetAllIngredientCategories(ctx context.Context) ([]ingredient_categories.IngredientCategory, error)
+	GetIngredientCategories(ctx context.Context) ([]ingredient_categories.IngredientCategory, error)
 	UpdateIngredientCategory(ctx context.Context, id int, requestDTO CreateIngredientCategoryRequestDTO) (ingredient_categories.IngredientCategory, error)
 	DeleteIngredientCategory(ctx context.Context, id int) error
 }
@@ -47,8 +47,8 @@ func (is *ingredientCategoryService) GetIngredientCategoryByID(ctx context.Conte
 	panic("implement me")
 }
 
-func (is *ingredientCategoryService) GetAllIngredientCategories(ctx context.Context) ([]ingredient_categories.IngredientCategory, error) {
-	panic("implement me")
+func (is *ingredientCategoryService) GetIngredientCategories(ctx context.Context) ([]ingredient_categories.IngredientCategory, error) {
+	return is.ir.GetIngredientCategories(ctx)
 }
 
 func (is *ingredientCategoryService) UpdateIngredientCategory(ctx context.Context, id int, requestDTO CreateIngredientCategoryRequestDTO) (ingredient_categories.IngredientCategory, error) {
