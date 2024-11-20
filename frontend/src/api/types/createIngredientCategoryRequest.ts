@@ -1,3 +1,3 @@
 export type CreateIngredientCategoryRequest = {
-  name: string;
+	name: string;
 };
