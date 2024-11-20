@@ -6,7 +6,7 @@ import "context"
 type IIngredientCategoryRepository interface {
 	CreateIngredientCategory(ctx context.Context, ingredientCategory IngredientCategory) (IngredientCategory, error)
 	GetIngredientCategoryByID(ctx context.Context, id int) (IngredientCategory, error)
-	GetAllIngredientCategories(ctx context.Context) ([]IngredientCategory, error)
+	GetIngredientCategories(ctx context.Context) ([]IngredientCategory, error)
 	UpdateIngredientCategory(ctx context.Context, ingredientCategory IngredientCategory) (IngredientCategory, error)
 	DeleteIngredientCategory(ctx context.Context, id int) error
 }
