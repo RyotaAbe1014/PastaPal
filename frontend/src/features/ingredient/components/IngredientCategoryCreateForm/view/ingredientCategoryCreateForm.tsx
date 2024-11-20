@@ -2,7 +2,13 @@ import { Button } from "@/components/ui/button";
 import { Card, Input } from "@chakra-ui/react";
 import { BsPlus } from "react-icons/bs";
 
-export const IngredientCategoryCreateFormView = () => {
+type IngredientCategoryCreateFormViewProps = {
+	onConfirm: () => void;
+	name: string;
+	setName: (name: string) => void;
+};
+
+export const IngredientCategoryCreateFormView = ({ onConfirm, name, setName }: IngredientCategoryCreateFormViewProps) => {
 	return (
 		<Card.Root variant={"elevated"} maxWidth={"900px"}>
 			<Card.Header>
@@ -11,8 +17,8 @@ export const IngredientCategoryCreateFormView = () => {
 				</Card.Title>
 			</Card.Header>
 			<Card.Body display={"flex"} flexDirection={"row"} gap={"3"} pt={2}>
-				<Input placeholder="新しい種別" backgroundColor={"green.100"} />
-				<Button backgroundColor={"green.600"}>
+				<Input placeholder="新しい種別" backgroundColor={"green.100"} value={name} onChange={(e) => setName(e.target.value)} />
+				<Button backgroundColor={"green.600"} onClick={onConfirm}>
 					<BsPlus />
 					追加
 				</Button>
