@@ -8,7 +8,7 @@ import (
 
 type IngredientCategoryController interface {
 	CreateIngredientCategory(ctx context.Context, request CreateIngredientCategoryRequest) (CreateIngredientCategoryResponse, error)
-	GetIngredientCategories(ctx context.Context) error
+	GetIngredientCategories(ctx context.Context) (GetIngredientCategoriesResponse, error)
 	UpdateIngredientCategory(ctx context.Context) error
 	DeleteIngredientCategory(ctx context.Context) error
 }
@@ -37,8 +37,22 @@ func (h *ingredientCategoryController) CreateIngredientCategory(ctx context.Cont
 	}, nil
 }
 
-func (h *ingredientCategoryController) GetIngredientCategories(ctx context.Context) error {
-	return nil
+func (h *ingredientCategoryController) GetIngredientCategories(ctx context.Context) (GetIngredientCategoriesResponse, error) {
+	ingredientCategories, err := h.ingredientCategoryService.GetIngredientCategories(ctx)
+
+	if err != nil {
+		return GetIngredientCategoriesResponse{}, err
+	}
+
+	var ingredientCategoryResponses GetIngredientCategoriesResponse
+	for _, ingredientCategory := range ingredientCategories {
+		ingredientCategoryResponses.Data = append(ingredientCategoryResponses.Data, CreateIngredientCategoryResponse{
+			ID:   ingredientCategory.ID(),
+			Name: ingredientCategory.Name(),
+		})
+	}
+
+	return ingredientCategoryResponses, nil
 }
 
 func (h *ingredientCategoryController) UpdateIngredientCategory(ctx context.Context) error {
