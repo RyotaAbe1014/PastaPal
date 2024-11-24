@@ -5,7 +5,7 @@ import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_app")({
 	component: AppLayout,
-	beforeLoad: async ({ location }) => {
+	beforeLoad: async () => {
 		const api = ApiClient();
 		const response = await api.Get<undefined, AuthStatusResponse>(
 			"/auth/github/status",
@@ -14,9 +14,6 @@ export const Route = createFileRoute("/_app")({
 			// APIはcookieのトークンを見ているので、ローカルストレージのユーザー名だけでログイン済みとみなす
 			throw redirect({
 				to: "/login",
-				search: {
-					redirect: location.href,
-				},
 			});
 		}
 	},
