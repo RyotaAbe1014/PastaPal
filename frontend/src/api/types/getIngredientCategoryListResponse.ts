@@ -1,8 +1,8 @@
 export type getIngredientCategoryListResponse = {
-  data: IngredientCategory[];
+	data: IngredientCategory[];
 };
 
 export type IngredientCategory = {
-  id: number;
-  name: string;
+	id: number;
+	name: string;
 };
