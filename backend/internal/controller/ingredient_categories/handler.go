@@ -45,6 +45,9 @@ func (h *ingredientCategoryController) GetIngredientCategories(ctx context.Conte
 	}
 
 	var ingredientCategoryResponses GetIngredientCategoriesResponse
+	// 0件の場合は空のスライスが返却されるようにする
+	ingredientCategoryResponses.Data = make([]CreateIngredientCategoryResponse, 0)
+
 	for _, ingredientCategory := range ingredientCategories {
 		ingredientCategoryResponses.Data = append(ingredientCategoryResponses.Data, CreateIngredientCategoryResponse{
 			ID:   ingredientCategory.ID(),

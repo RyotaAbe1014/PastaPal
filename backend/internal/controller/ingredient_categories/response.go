@@ -6,7 +6,7 @@ type CreateIngredientCategoryResponse struct {
 }
 
 type GetIngredientCategoriesResponse struct {
-	Data []CreateIngredientCategoryResponse `json:"ingredient_categories"`
+	Data []CreateIngredientCategoryResponse `json:"data"`
 }
 
 type IngredientCategory struct {
