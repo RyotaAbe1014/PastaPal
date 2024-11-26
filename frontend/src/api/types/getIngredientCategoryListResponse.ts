@@ -1,4 +1,4 @@
-export type getIngredientCategoryListResponse = {
+export type GetIngredientCategoryListResponse = {
 	data: IngredientCategory[];
 };
 

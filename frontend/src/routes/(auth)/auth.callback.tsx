@@ -1,4 +1,4 @@
-import { ApiClient } from "@/api/client";
+import { ApiClient, isApiError } from "@/api/client";
 import type { GenerateTokenAndGetUserRequest } from "@/api/types/generateTokenAndGetUserRequest";
 import type { GenerateTokenAndGetUserResponse } from "@/api/types/generateTokenAndGetUserResponse";
 import {
@@ -34,11 +34,17 @@ const AuthCallback = () => {
 	const hasFetched = useRef(false); // 初回実行を記録するフラグ(StrictMode対策)
 
 	const generateTokenAndGetUser = useCallback(async () => {
-		const user = await api.Post<
+		const response = await api.Post<
 			GenerateTokenAndGetUserRequest,
 			GenerateTokenAndGetUserResponse
 		>("/auth/github/token", { code });
-		localStorage.setItem("userId", JSON.stringify(user.userId));
+
+		if (isApiError(response)) {
+			// TODO: ダイアログ側にエラーを表示する
+			return;
+		}
+
+		localStorage.setItem("userId", JSON.stringify(response.data.userId));
 		navigate({ to: "/ingredients" });
 	}, [api, code, navigate]);
 

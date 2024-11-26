@@ -5,9 +5,13 @@ type ApiError = {
 	message: string;
 };
 
-type ApiResponse<ResponseType> =
+export type ApiResponse<ResponseType> =
 	| { type: "success"; data: ResponseType }
 	| ApiError;
+
+export const isApiError = (response: ApiResponse<unknown>): response is ApiError => {
+	return response.type === "error";
+}
 
 export const ApiClient = () => {
 	const Get = async <RequestType = undefined, ResponseType = unknown>(

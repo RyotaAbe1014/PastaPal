@@ -1,4 +1,4 @@
-import { ApiClient } from "@/api/client";
+import { ApiClient, isApiError } from "@/api/client";
 import type { GetGitHubUrlResponse } from "@/api/types/getGitHubUrlResponse";
 import { Button } from "@/components/ui/button";
 import { Card } from "@chakra-ui/react";
@@ -10,7 +10,13 @@ export const LoginForm = () => {
 		const response = await api.Get<undefined, GetGitHubUrlResponse>(
 			"/auth/github/url",
 		);
-		window.location.href = response.url;
+
+		if (isApiError(response)) {
+			// TODO: ダイアログ側にエラーを表示する
+			return
+		}
+
+		window.location.href = response.data.url;
 	};
 	return (
 		<Card.Root variant={"elevated"} width={"500px"}>
