@@ -1,15 +1,17 @@
-import { ApiClient, type ApiResponse } from "@/api/client";
 import type { GetIngredientCategoryListResponse } from "@/api/types/getIngredientCategoryListResponse";
+import { fetcher } from "@/libs/swr/fetcher";
 import useSWR from "swr";
 
 export const useIngredientCreateForm = () => {
-	const api = ApiClient();
-
-	const { data, isLoading } = useSWR<
-		ApiResponse<GetIngredientCategoryListResponse>
-	>("/ingredient-categories", (url: string) =>
-		api.Get<undefined, GetIngredientCategoryListResponse>(url),
+	const { data, isLoading, error } = useSWR<GetIngredientCategoryListResponse>(
+		"/ingredient-categories",
+		(url: string) => fetcher<undefined, GetIngredientCategoryListResponse>(url),
 	);
+
+	if (error) {
+		console.error(error);
+		// TODO: エラーをダイアログで表示する
+	}
 
 	return {
 		ingredientCategoryList: data?.data,
