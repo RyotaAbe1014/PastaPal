@@ -38,6 +38,10 @@ func (i Ingredient) Name() string {
 	return i.name
 }
 
+func (i Ingredient) IngredientCategoryID() string {
+	return i.ingredient_categories_id
+}
+
 // validation
 func validateName(name string) error {
 	if name == "" {
