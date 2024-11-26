@@ -2,8 +2,10 @@ package ingredients
 
 import (
 	"context"
+	"errors"
 
 	"github.com/RyotaAbe1014/Pastapal/internal/domain/ingredients"
+	"github.com/google/uuid"
 )
 
 type CreateIngredientRequestDTO struct {
@@ -28,7 +30,21 @@ func NewIngredientService(ir ingredients.IIngredientRepository) IngredientServic
 }
 
 func (is *ingredientService) CreateIngredient(ctx context.Context, requestDTO CreateIngredientRequestDTO) (ingredients.Ingredient, error) {
-	return ingredients.Ingredient{}, nil
+	id := uuid.New().String()
+	ingredient, err := ingredients.NewIngredient(id, requestDTO.Name, requestDTO.IngredientCategoryID)
+
+	if err != nil {
+		return ingredients.Ingredient{},
+			errors.New("failed to create ingredient category")
+	}
+
+	createdIngredient, createErr := is.ir.CreateIngredient(ctx, ingredient)
+
+	if createErr != nil {
+		return ingredients.Ingredient{}, createErr
+	}
+
+	return createdIngredient, nil
 }
 
 func (is *ingredientService) GetIngredientByID(ctx context.Context, id int) (ingredients.Ingredient, error) {

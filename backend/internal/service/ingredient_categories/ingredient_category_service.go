@@ -40,7 +40,6 @@ func (is *ingredientCategoryService) CreateIngredientCategory(ctx context.Contex
 	is.ir.CreateIngredientCategory(ctx, ingredientCategory)
 
 	return ingredientCategory, nil
-
 }
 
 func (is *ingredientCategoryService) GetIngredientCategoryByID(ctx context.Context, id int) (ingredient_categories.IngredientCategory, error) {

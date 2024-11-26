@@ -24,7 +24,8 @@ func NewIngredientController(is ingredients.IngredientService) IngredientControl
 
 func (h *ingredientCategoryController) CreateIngredient(ctx context.Context, request CreateIngredientRequest) (CreateIngredientResponse, error) {
 	ingredientCategory, err := h.ingredientCategoryService.CreateIngredient(ctx, ingredients.CreateIngredientRequestDTO{
-		Name: request.Name,
+		Name:                 request.Name,
+		IngredientCategoryID: request.IngredientCategoryID,
 	})
 
 	if err != nil {
@@ -32,8 +33,9 @@ func (h *ingredientCategoryController) CreateIngredient(ctx context.Context, req
 	}
 
 	return CreateIngredientResponse{
-		ID:   ingredientCategory.ID(),
-		Name: ingredientCategory.Name(),
+		ID:                   ingredientCategory.ID(),
+		Name:                 ingredientCategory.Name(),
+		IngredientCategoryID: ingredientCategory.IngredientCategoryID(),
 	}, nil
 }
 
