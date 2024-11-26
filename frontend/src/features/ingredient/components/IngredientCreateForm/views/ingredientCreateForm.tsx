@@ -13,10 +13,20 @@ import { BsPlus } from "react-icons/bs";
 
 export type IngredientCreateFormViewProps = {
 	ingredientCategoryList: IngredientCategory[];
+	name: string;
+	setName: (name: string) => void;
+	ingredientCategoryId: string;
+	setIngredientCategoryId: (ingredientCategoryId: string) => void;
+	onConfirm: () => void;
 };
 
 export const IngredientCreateFormView = ({
 	ingredientCategoryList,
+	name,
+	setName,
+	ingredientCategoryId,
+	setIngredientCategoryId,
+	onConfirm,
 }: IngredientCreateFormViewProps) => {
 	const items = useMemo(() => {
 		return createListCollection({
@@ -35,12 +45,20 @@ export const IngredientCreateFormView = ({
 				</Card.Title>
 			</Card.Header>
 			<Card.Body display={"flex"} flexDirection={"row"} gap={"3"} pt={2}>
-				<Input placeholder="食材名" backgroundColor={"green.100"} flex="6" />
+				<Input
+					placeholder="食材名"
+					backgroundColor={"green.100"}
+					flex="6"
+					value={name}
+					onChange={(e) => setName(e.target.value)}
+				/>
 				<SelectRoot
 					size={"md"}
 					collection={items}
 					backgroundColor={"green.100"}
 					flex={"3"}
+					value={[ingredientCategoryId]}
+					onValueChange={(e) => setIngredientCategoryId(e.value[0])}
 				>
 					<SelectTrigger>
 						<SelectValueText placeholder="種別を選択" />
@@ -53,7 +71,7 @@ export const IngredientCreateFormView = ({
 						))}
 					</SelectContent>
 				</SelectRoot>
-				<Button backgroundColor={"green.600"}>
+				<Button backgroundColor={"green.600"} onClick={onConfirm}>
 					<BsPlus />
 					追加
 				</Button>
