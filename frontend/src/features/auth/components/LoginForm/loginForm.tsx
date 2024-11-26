@@ -13,7 +13,7 @@ export const LoginForm = () => {
 
 		if (isApiError(response)) {
 			// TODO: ダイアログ側にエラーを表示する
-			return
+			return;
 		}
 
 		window.location.href = response.data.url;
