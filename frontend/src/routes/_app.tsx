@@ -11,7 +11,7 @@ export const Route = createFileRoute("/_app")({
 			"/auth/github/status",
 		);
 
-		if(isApiError(response)) {
+		if (isApiError(response)) {
 			throw redirect({
 				to: "/login",
 			});
