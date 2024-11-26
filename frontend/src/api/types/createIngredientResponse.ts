@@ -1,5 +1,5 @@
 export type CreateIngredientResponse = {
-  id: string;
-  name: string;
-  ingredientCategoryId: string;
-}
+	id: string;
+	name: string;
+	ingredientCategoryId: string;
+};
