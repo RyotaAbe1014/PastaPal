@@ -6,19 +6,19 @@ import (
 )
 
 type Ingredient struct {
-	id                       string
-	ingredient_categories_id string
-	name                     string
-	created_at               time.Time
-	updated_at               time.Time
+	id                     string
+	ingredient_category_id string
+	name                   string
+	created_at             time.Time
+	updated_at             time.Time
 }
 
 // constructor
-func NewIngredient(id string, name string) (Ingredient, error) {
+func NewIngredient(id string, name string, ingredient_category_id string) (Ingredient, error) {
 	if err := validateName(name); err != nil {
 		return Ingredient{}, err
 	}
-	return Ingredient{id: id, name: name}, nil
+	return Ingredient{id: id, name: name, ingredient_category_id: ingredient_category_id}, nil
 }
 
 // 永続化層から取得したデータをドメイン層に変換する
@@ -39,7 +39,7 @@ func (i Ingredient) Name() string {
 }
 
 func (i Ingredient) IngredientCategoryID() string {
-	return i.ingredient_categories_id
+	return i.ingredient_category_id
 }
 
 // validation
