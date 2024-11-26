@@ -30,9 +30,9 @@ ORDER BY name;
 
 -- name: CreateIngredient :one
 INSERT INTO ingredients (
-  name, ingredient_category_id
+  id, name, ingredient_category_id
 ) VALUES (
-  $1, $2
+  $1, $2, $3
 )
 RETURNING *;
 
