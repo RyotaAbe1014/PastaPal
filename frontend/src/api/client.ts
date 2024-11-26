@@ -1,14 +1,13 @@
 type ApiError = {
-  type: 'error';
-  status: string;
-  title?: string;
-  message: string;
+	type: "error";
+	status: string;
+	title?: string;
+	message: string;
 };
 
 type ApiResponse<ResponseType> =
-  | { type: 'success'; data: ResponseType }
-  | ApiError;
-
+	| { type: "success"; data: ResponseType }
+	| ApiError;
 
 export const ApiClient = () => {
 	const Get = async <RequestType = undefined, ResponseType = unknown>(
@@ -84,17 +83,17 @@ const request = async <RequestType = undefined, ResponseType = unknown>(
 };
 
 const handleResponse = async <ResponseType>(
-  response: Response,
+	response: Response,
 ): Promise<ApiResponse<ResponseType>> => {
-  if (!response.ok) {
-    const errorData = await response.json();
-    return {
-      type: 'error',
-      status: response.status.toString(),
-      title: errorData.title,
-      message: errorData.message || 'An error occurred',
-    };
-  }
-  const data = (await response.json()) as ResponseType;
-  return { type: 'success', data };
+	if (!response.ok) {
+		const errorData = await response.json();
+		return {
+			type: "error",
+			status: response.status.toString(),
+			title: errorData.title,
+			message: errorData.message || "An error occurred",
+		};
+	}
+	const data = (await response.json()) as ResponseType;
+	return { type: "success", data };
 };
