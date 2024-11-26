@@ -4,9 +4,12 @@ import (
 	"net/http"
 
 	ingredient_categories_controller "github.com/RyotaAbe1014/Pastapal/internal/controller/ingredient_categories"
+	ingredients_controller "github.com/RyotaAbe1014/Pastapal/internal/controller/ingredients"
 	"github.com/RyotaAbe1014/Pastapal/internal/infrastructure/oauth/github"
 	"github.com/RyotaAbe1014/Pastapal/internal/infrastructure/postgres/repository"
+
 	ingredient_categories_service "github.com/RyotaAbe1014/Pastapal/internal/service/ingredient_categories"
+	ingredients_service "github.com/RyotaAbe1014/Pastapal/internal/service/ingredients"
 
 	"github.com/labstack/echo/v4"
 )
@@ -169,7 +172,25 @@ func Router(g *echo.Group) {
 	})
 
 	g.POST("/ingredients", func(c echo.Context) error {
-		return c.String(http.StatusOK, "ingredients")
+		ctx := c.Request().Context()
+		ingredientRepository := repository.NewIngredientRepository()
+		ingredientService := ingredients_service.NewIngredientService(ingredientRepository)
+		ingredientController := ingredients_controller.NewIngredientController(ingredientService)
+
+		req := new(ingredients_controller.CreateIngredientRequest)
+		if err := c.Bind(req); err != nil {
+			return c.JSON(http.StatusBadRequest, err.Error())
+		}
+
+		result, err := ingredientController.CreateIngredient(ctx, ingredients_controller.CreateIngredientRequest{
+			Name:                 req.Name,
+			IngredientCategoryID: req.IngredientCategoryID,
+		})
+
+		if err != nil {
+			return c.String(http.StatusInternalServerError, err.Error())
+		}
+		return c.JSON(http.StatusOK, result)
 	})
 
 	g.PUT("/ingredients/:id", func(c echo.Context) error {
