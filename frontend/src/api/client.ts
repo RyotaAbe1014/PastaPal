@@ -1,8 +1,20 @@
+type ApiError = {
+  type: 'error';
+  status: string;
+  title?: string;
+  message: string;
+};
+
+type ApiResponse<ResponseType> =
+  | { type: 'success'; data: ResponseType }
+  | ApiError;
+
+
 export const ApiClient = () => {
 	const Get = async <RequestType = undefined, ResponseType = unknown>(
 		path: string,
 		params?: RequestType,
-	): Promise<ResponseType> => {
+	): Promise<ApiResponse<ResponseType>> => {
 		// paramsをクエリパラメータに変換
 		const queryString = params ? requestToUrlSearch(params).toString() : "";
 		// クエリパラメータがあればURLに追加
@@ -13,15 +25,15 @@ export const ApiClient = () => {
 	const Post = <RequestType = undefined, ResponseType = unknown>(
 		path: string,
 		params?: RequestType,
-	): Promise<ResponseType> => request(path, "POST", params);
+	): Promise<ApiResponse<ResponseType>> => request(path, "POST", params);
 	const Put = <RequestType = undefined, ResponseType = unknown>(
 		path: string,
 		params?: RequestType,
-	): Promise<ResponseType> => request(path, "PUT", params);
+	): Promise<ApiResponse<ResponseType>> => request(path, "PUT", params);
 	const Delete = <RequestType = undefined, ResponseType = unknown>(
 		path: string,
 		params?: RequestType,
-	): Promise<ResponseType> => request(path, "DELETE", params);
+	): Promise<ApiResponse<ResponseType>> => request(path, "DELETE", params);
 
 	return {
 		Get,
@@ -53,7 +65,7 @@ const request = async <RequestType = undefined, ResponseType = unknown>(
 	path: string,
 	method: string,
 	params?: RequestType,
-): Promise<ResponseType> => {
+): Promise<ApiResponse<ResponseType>> => {
 	const settings = {
 		BaseUrl: import.meta.env.VITE_ENV_API_URL,
 	};
@@ -72,11 +84,17 @@ const request = async <RequestType = undefined, ResponseType = unknown>(
 };
 
 const handleResponse = async <ResponseType>(
-	response: Response,
-): Promise<ResponseType> => {
-	if (!response.ok) {
-		// TODO: ここのエラーハンドリングは適切なものに変更する
-		throw new Error("fetch failed");
-	}
-	return response.json() as Promise<ResponseType>;
+  response: Response,
+): Promise<ApiResponse<ResponseType>> => {
+  if (!response.ok) {
+    const errorData = await response.json();
+    return {
+      type: 'error',
+      status: response.status.toString(),
+      title: errorData.title,
+      message: errorData.message || 'An error occurred',
+    };
+  }
+  const data = (await response.json()) as ResponseType;
+  return { type: 'success', data };
 };
