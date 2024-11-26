@@ -9,11 +9,11 @@ import (
 )
 
 type Ingredient struct {
-	ID         pgtype.UUID
-	Name       string
-	CategoryID pgtype.UUID
-	CreatedAt  pgtype.Timestamp
-	UpdatedAt  pgtype.Timestamp
+	ID                   pgtype.UUID
+	Name                 string
+	IngredientCategoryID pgtype.UUID
+	CreatedAt            pgtype.Timestamp
+	UpdatedAt            pgtype.Timestamp
 }
 
 type IngredientCategory struct {

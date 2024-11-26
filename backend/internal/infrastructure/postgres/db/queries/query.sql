@@ -30,7 +30,7 @@ ORDER BY name;
 
 -- name: CreateIngredient :one
 INSERT INTO ingredients (
-  name, category_id
+  name, ingredient_category_id
 ) VALUES (
   $1, $2
 )

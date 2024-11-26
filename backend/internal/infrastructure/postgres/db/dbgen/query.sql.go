@@ -13,25 +13,25 @@ import (
 
 const createIngredient = `-- name: CreateIngredient :one
 INSERT INTO ingredients (
-  name, category_id
+  name, ingredient_category_id
 ) VALUES (
   $1, $2
 )
-RETURNING id, name, category_id, created_at, updated_at
+RETURNING id, name, ingredient_category_id, created_at, updated_at
 `
 
 type CreateIngredientParams struct {
-	Name       string
-	CategoryID pgtype.UUID
+	Name                 string
+	IngredientCategoryID pgtype.UUID
 }
 
 func (q *Queries) CreateIngredient(ctx context.Context, arg CreateIngredientParams) (Ingredient, error) {
-	row := q.db.QueryRow(ctx, createIngredient, arg.Name, arg.CategoryID)
+	row := q.db.QueryRow(ctx, createIngredient, arg.Name, arg.IngredientCategoryID)
 	var i Ingredient
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
-		&i.CategoryID,
+		&i.IngredientCategoryID,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
@@ -93,7 +93,7 @@ func (q *Queries) GetIngredientCategory(ctx context.Context, id pgtype.UUID) (In
 }
 
 const listIngredients = `-- name: ListIngredients :many
-SELECT id, name, category_id, created_at, updated_at FROM ingredients
+SELECT id, name, ingredient_category_id, created_at, updated_at FROM ingredients
 ORDER BY name
 `
 
@@ -109,7 +109,7 @@ func (q *Queries) ListIngredients(ctx context.Context) ([]Ingredient, error) {
 		if err := rows.Scan(
 			&i.ID,
 			&i.Name,
-			&i.CategoryID,
+			&i.IngredientCategoryID,
 			&i.CreatedAt,
 			&i.UpdatedAt,
 		); err != nil {

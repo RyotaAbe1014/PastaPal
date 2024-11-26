@@ -1,0 +1,1 @@
+ALTER TABLE ingredients RENAME COLUMN ingredient_category_id TO category_id;
