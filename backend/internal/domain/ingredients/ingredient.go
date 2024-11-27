@@ -9,8 +9,8 @@ type Ingredient struct {
 	id                   string
 	ingredientCategoryID string
 	name                 string
-	created_at           time.Time
-	updated_at           time.Time
+	createdAt            time.Time
+	updatedAt            time.Time
 }
 
 // constructor
@@ -22,11 +22,11 @@ func NewIngredient(id string, name string, ingredientCategoryID string) (Ingredi
 }
 
 // 永続化層から取得したデータをドメイン層に変換する
-func NewIngredientFromRepository(id string, name string, ingredientCategoryID string, created_at time.Time, updated_at time.Time) (Ingredient, error) {
+func NewIngredientFromRepository(id string, name string, ingredientCategoryID string, createdAt time.Time, updatedAt time.Time) (Ingredient, error) {
 	if err := validateName(name); err != nil {
 		return Ingredient{}, err
 	}
-	return Ingredient{id: id, name: name, created_at: created_at, updated_at: updated_at}, nil
+	return Ingredient{id: id, name: name, ingredientCategoryID: ingredientCategoryID, createdAt: createdAt, updatedAt: updatedAt}, nil
 }
 
 // getter

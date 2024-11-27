@@ -2,7 +2,7 @@ package ingredients
 
 type CreateIngredientResponse struct {
 	ID                   string `json:"id"`
-	IngredientCategoryID string `json:"ingredient_category_id"`
+	IngredientCategoryID string `json:"ingredientCategoryId"`
 	Name                 string `json:"name"`
 }
 
@@ -12,12 +12,12 @@ type GetIngredientsResponse struct {
 
 type Ingredient struct {
 	ID                   string `json:"id"`
-	IngredientCategoryID string `json:"ingredient_category_id"`
+	IngredientCategoryID string `json:"ingredientCategoryId"`
 	Name                 string `json:"name"`
 }
 
 type UpdateIngredientCategoryResponse struct {
 	ID                   string `json:"id"`
-	IngredientCategoryID string `json:"ingredient_category_id"`
+	IngredientCategoryID string `json:"ingredientCategoryId"`
 	Name                 string `json:"name"`
 }
