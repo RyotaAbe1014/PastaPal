@@ -2,7 +2,7 @@ import type { GetIngredientListResponse } from "@/api/types/getIngredientListRes
 import { fetcher } from "@/libs/swr/fetcher";
 import useSWR from "swr";
 
-export const useIngredients = () => {
+export const useGetIngredientList = () => {
 	const { data, isLoading, error, isValidating, mutate } =
 		useSWR<GetIngredientListResponse>(
 			"/ingredients",
