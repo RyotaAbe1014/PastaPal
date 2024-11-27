@@ -52,7 +52,7 @@ func (is *ingredientService) GetIngredientByID(ctx context.Context, id int) (ing
 }
 
 func (is *ingredientService) GetIngredients(ctx context.Context) ([]ingredients.Ingredient, error) {
-	return []ingredients.Ingredient{}, nil
+	return is.ir.GetIngredients(ctx)
 }
 
 func (is *ingredientService) UpdateIngredient(ctx context.Context, id int, requestDTO CreateIngredientRequestDTO) (ingredients.Ingredient, error) {

@@ -22,7 +22,7 @@ func NewIngredient(id string, name string, ingredient_category_id string) (Ingre
 }
 
 // 永続化層から取得したデータをドメイン層に変換する
-func NewIngredientFromRepository(id string, name string, created_at time.Time, updated_at time.Time) (Ingredient, error) {
+func NewIngredientFromRepository(id string, name string, ingredient_category_id string, created_at time.Time, updated_at time.Time) (Ingredient, error) {
 	if err := validateName(name); err != nil {
 		return Ingredient{}, err
 	}

@@ -164,7 +164,18 @@ func Router(g *echo.Group) {
 
 	// 食材管理
 	g.GET(("/ingredients"), func(c echo.Context) error {
-		return c.String(http.StatusOK, "ingredients")
+		ctx := c.Request().Context()
+		ingredientRepository := repository.NewIngredientRepository()
+		ingredientService := ingredients_service.NewIngredientService(ingredientRepository)
+		ingredientController := ingredients_controller.NewIngredientController(ingredientService)
+
+		result, err := ingredientController.GetIngredients(ctx)
+
+		if err != nil {
+			return c.String(http.StatusInternalServerError, err.Error())
+		}
+
+		return c.JSON(http.StatusOK, result)
 	})
 
 	g.GET(("/ingredients/:id"), func(c echo.Context) error {
