@@ -6,10 +6,10 @@ import (
 )
 
 type IngredientCategory struct {
-	id         string
-	name       string
-	created_at time.Time
-	updated_at time.Time
+	id        string
+	name      string
+	createdAt time.Time
+	updatedAt time.Time
 }
 
 // constructor
@@ -21,11 +21,11 @@ func NewIngredientCategory(id string, name string) (IngredientCategory, error) {
 }
 
 // 永続化層から取得したデータをドメイン層に変換する
-func NewIngredientCategoryFromRepository(id string, name string, created_at time.Time, updated_at time.Time) (IngredientCategory, error) {
+func NewIngredientCategoryFromRepository(id string, name string, createdAt time.Time, updatedAt time.Time) (IngredientCategory, error) {
 	if err := validateName(name); err != nil {
 		return IngredientCategory{}, err
 	}
-	return IngredientCategory{id: id, name: name, created_at: created_at, updated_at: updated_at}, nil
+	return IngredientCategory{id: id, name: name, createdAt: createdAt, updatedAt: updatedAt}, nil
 }
 
 // getter
