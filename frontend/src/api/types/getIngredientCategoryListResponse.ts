@@ -3,6 +3,6 @@ export type GetIngredientCategoryListResponse = {
 };
 
 export type IngredientCategory = {
-	id: number;
+	id: string;
 	name: string;
 };

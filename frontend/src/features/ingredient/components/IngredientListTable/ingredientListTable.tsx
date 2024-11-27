@@ -1,12 +1,13 @@
-import { useGetIngredientList } from "../../hooks";
+import { useGetIngredientCategoryList, useGetIngredientList } from "../../hooks";
 import { IngredientListTableView } from "./view";
 
 export const IngredientListTable = () => {
-	const { ingredients, isLoading } = useGetIngredientList();
+	const { ingredients, isLoading: isIngredientsLoading} = useGetIngredientList();
+	const { ingredientCategories, isLoading: isIngredientCategoriesLoading } = useGetIngredientCategoryList();
 
-	if (isLoading || !ingredients) {
+	if (isIngredientsLoading || isIngredientCategoriesLoading || !ingredients || !ingredientCategories) {
 		return <div>Loading...</div>;
 	}
 
-	return <IngredientListTableView ingredients={ingredients} />;
+	return <IngredientListTableView ingredients={ingredients} ingredientCategories={ingredientCategories} />;
 };

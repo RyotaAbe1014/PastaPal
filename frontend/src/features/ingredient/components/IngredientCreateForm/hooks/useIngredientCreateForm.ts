@@ -9,7 +9,7 @@ export const useIngredientCreateForm = () => {
 	const [name, setName] = useState<string>("");
 	const [ingredientCategoryId, setIngredientCategoryId] = useState<string>("");
 
-	const { ingredients, isLoading } = useGetIngredientCategoryList();
+	const { ingredientCategories, isLoading } = useGetIngredientCategoryList();
 
 	const onConfirm = async () => {
 		if (!ingredientCategoryId) {
@@ -33,7 +33,7 @@ export const useIngredientCreateForm = () => {
 	};
 
 	return {
-		ingredientCategoryList: ingredients,
+		ingredientCategoryList: ingredientCategories,
 		isLoading,
 		name,
 		setName,

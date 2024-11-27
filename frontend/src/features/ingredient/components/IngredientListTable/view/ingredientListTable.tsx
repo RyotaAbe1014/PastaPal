@@ -1,3 +1,4 @@
+import { IngredientCategory } from "@/api/types/getIngredientCategoryListResponse";
 import type { Ingredient } from "@/api/types/getIngredientListResponse";
 import { Button } from "@/components/ui/button";
 import { Card, Table } from "@chakra-ui/react";
@@ -5,10 +6,12 @@ import { MdDelete, MdEdit } from "react-icons/md";
 
 type IngredientListTableViewProps = {
 	ingredients: Ingredient[];
+	ingredientCategories: IngredientCategory[];
 };
 
 export const IngredientListTableView = ({
 	ingredients,
+	ingredientCategories,
 }: IngredientListTableViewProps) => {
 	return (
 		<Card.Root variant={"elevated"} minHeight={"500px"} overflowY={"auto"}>
@@ -36,7 +39,13 @@ export const IngredientListTableView = ({
 						{ingredients.map((ingredient) => (
 							<Table.Row key={ingredient.id}>
 								<Table.Cell>{ingredient.name}</Table.Cell>
-								{/* <Table.Cell>{ingredient.category}</Table.Cell> */}
+								<Table.Cell>
+									{
+										ingredientCategories.find(
+											(category) => category.id === ingredient.ingredientCategoryId,
+										)?.name
+									}
+								</Table.Cell>
 								<Table.Cell display={"flex"} gap={2}>
 									<Button
 										color={"green.400"}
