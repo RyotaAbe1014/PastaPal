@@ -8,7 +8,7 @@ import (
 
 	"github.com/RyotaAbe1014/Pastapal/internal/infrastructure/postgres/db/dbgen"
 	"github.com/RyotaAbe1014/Pastapal/pkg/get_env"
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 var (
@@ -23,7 +23,7 @@ var (
 	once     sync.Once
 	readOnce sync.Once
 	query    *dbgen.Queries
-	dbcon    *pgx.Conn
+	dbcon    *pgxpool.Pool
 )
 
 // contextからQueriesを取得する。contextにQueriesが存在しない場合は、パッケージ変数からQueriesを取得する
@@ -38,10 +38,11 @@ func GetQuery(ctx context.Context) *dbgen.Queries {
 func SetQuery(q *dbgen.Queries) {
 	query = q
 }
-func GetDB() *pgx.Conn {
+func GetDB() *pgxpool.Pool {
 	return dbcon
 }
-func SetDB(d *pgx.Conn) {
+
+func SetDB(d *pgxpool.Pool) {
 	dbcon = d
 }
 
@@ -57,13 +58,13 @@ func NewMainDB() {
 	})
 }
 
-func createConnection(ctx context.Context) (*pgx.Conn, error) {
+func createConnection(ctx context.Context) (*pgxpool.Pool, error) {
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", dbUser, dbPassword, dbHost, dbPort, dbName)
 	maxRetries := 5
 	delay := 2 * time.Second
 
 	for i := 0; i < maxRetries; i++ {
-		conn, err := pgx.Connect(ctx, connStr)
+		conn, err := pgxpool.New(ctx, connStr)
 		if err == nil {
 			return conn, nil
 		}
@@ -75,7 +76,7 @@ func createConnection(ctx context.Context) (*pgx.Conn, error) {
 	return nil, fmt.Errorf("failed to connect to database after %d retries", maxRetries)
 }
 
-func getQueries(ctx context.Context) (*dbgen.Queries, *pgx.Conn, error) {
+func getQueries(ctx context.Context) (*dbgen.Queries, *pgxpool.Pool, error) {
 	conn, err := createConnection(ctx)
 
 	if err != nil {

@@ -46,7 +46,6 @@ func (r *IngredientRepository) CreateIngredient(ctx context.Context, ingredient 
 		Name:                 ingredient.Name(),
 		IngredientCategoryID: ingredientCategoryPgUUID,
 	})
-
 	if err != nil {
 		return ingredientsDomain.Ingredient{}, err
 	}
