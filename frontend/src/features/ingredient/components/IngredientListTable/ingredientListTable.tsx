@@ -1,5 +1,3 @@
-
-
 import { useIngredients } from "../../hooks";
 import { IngredientListTableView } from "./view";
 
@@ -10,7 +8,5 @@ export const IngredientListTable = () => {
 		return <div>Loading...</div>;
 	}
 
-	return (
-		<IngredientListTableView ingredients={ingredients} />
-	);
+	return <IngredientListTableView ingredients={ingredients} />;
 };

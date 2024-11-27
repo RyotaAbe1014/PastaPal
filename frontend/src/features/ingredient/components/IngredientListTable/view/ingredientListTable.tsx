@@ -1,15 +1,15 @@
-import { Ingredient } from "@/api/types/getIngredientListResponse";
+import type { Ingredient } from "@/api/types/getIngredientListResponse";
 import { Button } from "@/components/ui/button";
 import { Card, Table } from "@chakra-ui/react";
 import { MdDelete, MdEdit } from "react-icons/md";
-
 
 type IngredientListTableViewProps = {
 	ingredients: Ingredient[];
 };
 
-export const IngredientListTableView = ({ ingredients }: IngredientListTableViewProps) => {
-
+export const IngredientListTableView = ({
+	ingredients,
+}: IngredientListTableViewProps) => {
 	return (
 		<Card.Root variant={"elevated"} minHeight={"500px"} overflowY={"auto"}>
 			<Card.Header>
