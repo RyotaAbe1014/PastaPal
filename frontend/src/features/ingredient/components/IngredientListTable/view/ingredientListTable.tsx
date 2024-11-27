@@ -1,4 +1,4 @@
-import { IngredientCategory } from "@/api/types/getIngredientCategoryListResponse";
+import type { IngredientCategory } from "@/api/types/getIngredientCategoryListResponse";
 import type { Ingredient } from "@/api/types/getIngredientListResponse";
 import { Button } from "@/components/ui/button";
 import { Card, Table } from "@chakra-ui/react";
@@ -42,7 +42,8 @@ export const IngredientListTableView = ({
 								<Table.Cell>
 									{
 										ingredientCategories.find(
-											(category) => category.id === ingredient.ingredientCategoryId,
+											(category) =>
+												category.id === ingredient.ingredientCategoryId,
 										)?.name
 									}
 								</Table.Cell>
