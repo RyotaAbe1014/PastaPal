@@ -50,7 +50,7 @@ func IngredientCategoriesRouter(g *echo.Group) {
 		return c.JSON(http.StatusOK, result)
 	})
 
-	g.GET("", func(c echo.Context) error {
+	g.GET(":id", func(c echo.Context) error {
 		return c.String(http.StatusOK, "ingredient-categories")
 	})
 
