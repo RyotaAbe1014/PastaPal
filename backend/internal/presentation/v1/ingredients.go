@@ -69,6 +69,14 @@ func IngredientsRouter(g *echo.Group) {
 	})
 
 	g.DELETE("/:id", func(c echo.Context) error {
-		return c.String(http.StatusOK, "ingredients")
+		ctx := c.Request().Context()
+		id := c.Param("id")
+		err := ingredientController.DeleteIngredient(ctx, id)
+
+		if err != nil {
+			return c.String(http.StatusInternalServerError, err.Error())
+		}
+
+		return c.NoContent(http.StatusNoContent)
 	})
 }

@@ -10,7 +10,7 @@ type IngredientController interface {
 	CreateIngredient(ctx context.Context, request CreateIngredientRequest) (CreateIngredientResponse, error)
 	GetIngredients(ctx context.Context) (GetIngredientsResponse, error)
 	UpdateIngredient(ctx context.Context, req UpdateIngredientRequest) (UpdateIngredientResponse, error)
-	DeleteIngredient(ctx context.Context) error
+	DeleteIngredient(ctx context.Context, id string) error
 }
 
 type ingredientCategoryController struct {
@@ -77,6 +77,6 @@ func (h *ingredientCategoryController) UpdateIngredient(ctx context.Context, req
 	}, nil
 }
 
-func (h *ingredientCategoryController) DeleteIngredient(ctx context.Context) error {
-	return nil
+func (h *ingredientCategoryController) DeleteIngredient(ctx context.Context, id string) error {
+	return h.ingredientCategoryService.DeleteIngredient(ctx, id)
 }
