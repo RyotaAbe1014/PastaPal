@@ -53,3 +53,17 @@ func validateName(name string) error {
 	}
 	return nil
 }
+
+// setter
+func (i *Ingredient) UpdateName(name string) error {
+	if err := validateName(name); err != nil {
+		return err
+	}
+	i.name = name
+	return nil
+}
+
+func (i *Ingredient) UpdateIngredientCategoryID(ingredientCategoryID string) error {
+	i.ingredientCategoryID = ingredientCategoryID
+	return nil
+}
