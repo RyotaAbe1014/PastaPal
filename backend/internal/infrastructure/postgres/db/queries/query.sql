@@ -28,6 +28,10 @@ WHERE id = $1;
 SELECT * FROM ingredients
 ORDER BY name;
 
+-- name: GetIngredient :one
+SELECT * FROM ingredients
+WHERE id = $1 LIMIT 1;
+
 -- name: CreateIngredient :one
 INSERT INTO ingredients (
   id, name, ingredient_category_id
