@@ -100,6 +100,12 @@ const handleResponse = async <ResponseType>(
 			message: errorData.message || "An error occurred",
 		};
 	}
+
+	// 204 No Contentの場合はレスポンスボディがないため、空オブジェクトを返す
+	if (response.status === 204) {
+		return { type: "success", data: {} as ResponseType };
+	}
+
 	const data = (await response.json()) as ResponseType;
 	return { type: "success", data };
 };
