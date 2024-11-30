@@ -110,5 +110,22 @@ func (r *IngredientRepository) UpdateIngredient(ctx context.Context, ingredientC
 }
 
 func (r *IngredientRepository) DeleteIngredient(ctx context.Context, id string) error {
+	query := db.GetQuery(ctx)
+	ingredientUuidBytes, err := uuid.Parse(id)
+
+	if err != nil {
+		return err
+	}
+
+	ingredientPgUUID := pgtype.UUID{
+		Bytes: ingredientUuidBytes,
+		Valid: true,
+	}
+
+	err = query.DeleteIngredient(ctx, ingredientPgUUID)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

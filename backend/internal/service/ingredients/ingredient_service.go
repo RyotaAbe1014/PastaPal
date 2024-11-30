@@ -80,5 +80,5 @@ func (is *ingredientService) UpdateIngredient(ctx context.Context, requestDTO Cr
 }
 
 func (is *ingredientService) DeleteIngredient(ctx context.Context, id string) error {
-	return nil
+	return is.ir.DeleteIngredient(ctx, id)
 }
