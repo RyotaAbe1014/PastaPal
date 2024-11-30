@@ -76,6 +76,24 @@ func (q *Queries) DeleteIngredientCategory(ctx context.Context, id pgtype.UUID) 
 	return err
 }
 
+const getIngredient = `-- name: GetIngredient :one
+SELECT id, name, ingredient_category_id, created_at, updated_at FROM ingredients
+WHERE id = $1 LIMIT 1
+`
+
+func (q *Queries) GetIngredient(ctx context.Context, id pgtype.UUID) (Ingredient, error) {
+	row := q.db.QueryRow(ctx, getIngredient, id)
+	var i Ingredient
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.IngredientCategoryID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
 const getIngredientCategory = `-- name: GetIngredientCategory :one
 SELECT id, name, created_at, updated_at FROM ingredient_categories
 WHERE id = $1 LIMIT 1
