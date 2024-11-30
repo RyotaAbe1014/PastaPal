@@ -16,7 +16,6 @@ beforeEach(() => {
 
 describe("useIngredientCategoryCreateForm", () => {
 	it("初期値が正しく設定されていること", () => {
-
 		const { result } = renderHook(() => useIngredientCategoryCreateForm());
 
 		expect(result.current.name).toBe("");

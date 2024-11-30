@@ -1,7 +1,10 @@
 import { ApiClient, isApiError } from "@/api/client";
 import type { CreateIngredientRequest } from "@/api/types/createIngredientRequest";
 import type { CreateIngredientResponse } from "@/api/types/createIngredientResponse";
-import { useGetIngredientCategoryList, useGetIngredientList } from "@/features/ingredient/hooks";
+import {
+	useGetIngredientCategoryList,
+	useGetIngredientList,
+} from "@/features/ingredient/hooks";
 import { useState } from "react";
 
 export const useIngredientCreateForm = () => {
