@@ -66,6 +66,16 @@ func (q *Queries) CreateIngredientCategory(ctx context.Context, arg CreateIngred
 	return i, err
 }
 
+const deleteIngredient = `-- name: DeleteIngredient :exec
+DELETE FROM ingredients
+WHERE id = $1
+`
+
+func (q *Queries) DeleteIngredient(ctx context.Context, id pgtype.UUID) error {
+	_, err := q.db.Exec(ctx, deleteIngredient, id)
+	return err
+}
+
 const deleteIngredientCategory = `-- name: DeleteIngredientCategory :exec
 DELETE FROM ingredient_categories
 WHERE id = $1
@@ -185,15 +195,5 @@ type UpdateIngredientCategoryParams struct {
 
 func (q *Queries) UpdateIngredientCategory(ctx context.Context, arg UpdateIngredientCategoryParams) error {
 	_, err := q.db.Exec(ctx, updateIngredientCategory, arg.ID, arg.Name)
-	return err
-}
-
-const deleteIngredient = `-- name: deleteIngredient :exec
-DELETE FROM ingredients
-WHERE id = $1
-`
-
-func (q *Queries) deleteIngredient(ctx context.Context, id pgtype.UUID) error {
-	_, err := q.db.Exec(ctx, deleteIngredient, id)
 	return err
 }
