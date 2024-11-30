@@ -9,16 +9,17 @@ import (
 )
 
 type CreateIngredientRequestDTO struct {
+	ID                   string
 	Name                 string
 	IngredientCategoryID string
 }
 
 type IngredientService interface {
 	CreateIngredient(ctx context.Context, requestDTO CreateIngredientRequestDTO) (ingredients.Ingredient, error)
-	GetIngredientByID(ctx context.Context, id int) (ingredients.Ingredient, error)
+	GetIngredientByID(ctx context.Context, id string) (ingredients.Ingredient, error)
 	GetIngredients(ctx context.Context) ([]ingredients.Ingredient, error)
-	UpdateIngredient(ctx context.Context, id int, requestDTO CreateIngredientRequestDTO) (ingredients.Ingredient, error)
-	DeleteIngredient(ctx context.Context, id int) error
+	UpdateIngredient(ctx context.Context, requestDTO CreateIngredientRequestDTO) (ingredients.Ingredient, error)
+	DeleteIngredient(ctx context.Context, id string) error
 }
 
 type ingredientService struct {
@@ -47,18 +48,37 @@ func (is *ingredientService) CreateIngredient(ctx context.Context, requestDTO Cr
 	return createdIngredient, nil
 }
 
-func (is *ingredientService) GetIngredientByID(ctx context.Context, id int) (ingredients.Ingredient, error) {
-	return ingredients.Ingredient{}, nil
+func (is *ingredientService) GetIngredientByID(ctx context.Context, id string) (ingredients.Ingredient, error) {
+	return is.ir.GetIngredientByID(ctx, id)
 }
 
 func (is *ingredientService) GetIngredients(ctx context.Context) ([]ingredients.Ingredient, error) {
 	return is.ir.GetIngredients(ctx)
 }
 
-func (is *ingredientService) UpdateIngredient(ctx context.Context, id int, requestDTO CreateIngredientRequestDTO) (ingredients.Ingredient, error) {
-	return ingredients.Ingredient{}, nil
+func (is *ingredientService) UpdateIngredient(ctx context.Context, requestDTO CreateIngredientRequestDTO) (ingredients.Ingredient, error) {
+	targetIngredient, err := is.GetIngredientByID(ctx, requestDTO.ID)
+
+	if err != nil {
+		return ingredients.Ingredient{}, err
+	}
+
+	err = targetIngredient.UpdateName(requestDTO.Name)
+	err = targetIngredient.UpdateIngredientCategoryID(requestDTO.IngredientCategoryID)
+
+	if err != nil {
+		return ingredients.Ingredient{}, err
+	}
+
+	updatedIngredient, updateErr := is.ir.UpdateIngredient(ctx, targetIngredient)
+
+	if updateErr != nil {
+		return ingredients.Ingredient{}, updateErr
+	}
+
+	return updatedIngredient, nil
 }
 
-func (is *ingredientService) DeleteIngredient(ctx context.Context, id int) error {
+func (is *ingredientService) DeleteIngredient(ctx context.Context, id string) error {
 	return nil
 }

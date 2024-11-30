@@ -16,7 +16,7 @@ type Ingredient struct {
 	Name                 string `json:"name"`
 }
 
-type UpdateIngredientCategoryResponse struct {
+type UpdateIngredientResponse struct {
 	ID                   string `json:"id"`
 	IngredientCategoryID string `json:"ingredientCategoryId"`
 	Name                 string `json:"name"`

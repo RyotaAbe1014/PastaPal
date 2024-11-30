@@ -4,11 +4,11 @@ type CreateIngredientRequest struct {
 	Name                 string `json:"name"`
 	IngredientCategoryID string `json:"ingredientCategoryId"`
 }
-type UpdateIngredientCategoryRequest struct {
-	ID                   int    `json:"id"`
+type UpdateIngredientRequest struct {
+	ID                   string `json:"id"`
 	IngredientCategoryID string `json:"ingredientCategoryId"`
 	Name                 string `json:"name"`
 }
-type DeleteIngredientCategoryRequest struct {
-	ID int `json:"id"`
+type DeleteIngredientRequest struct {
+	ID string `json:"id"`
 }

@@ -9,7 +9,7 @@ import (
 type IngredientController interface {
 	CreateIngredient(ctx context.Context, request CreateIngredientRequest) (CreateIngredientResponse, error)
 	GetIngredients(ctx context.Context) (GetIngredientsResponse, error)
-	UpdateIngredient(ctx context.Context) error
+	UpdateIngredient(ctx context.Context, req UpdateIngredientRequest) (UpdateIngredientResponse, error)
 	DeleteIngredient(ctx context.Context) error
 }
 
@@ -59,8 +59,22 @@ func (h *ingredientCategoryController) GetIngredients(ctx context.Context) (GetI
 	return response, nil
 }
 
-func (h *ingredientCategoryController) UpdateIngredient(ctx context.Context) error {
-	return nil
+func (h *ingredientCategoryController) UpdateIngredient(ctx context.Context, req UpdateIngredientRequest) (UpdateIngredientResponse, error) {
+	ingredient, err := h.ingredientCategoryService.UpdateIngredient(ctx, ingredients.CreateIngredientRequestDTO{
+		ID:                   req.ID,
+		Name:                 req.Name,
+		IngredientCategoryID: req.IngredientCategoryID,
+	})
+
+	if err != nil {
+		return UpdateIngredientResponse{}, err
+	}
+
+	return UpdateIngredientResponse{
+		ID:                   ingredient.ID(),
+		Name:                 ingredient.Name(),
+		IngredientCategoryID: ingredient.IngredientCategoryID(),
+	}, nil
 }
 
 func (h *ingredientCategoryController) DeleteIngredient(ctx context.Context) error {
