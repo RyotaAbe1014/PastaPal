@@ -58,8 +58,32 @@ func (r *IngredientRepository) CreateIngredient(ctx context.Context, ingredient 
 	return newIngredient, nil
 }
 
-func (r *IngredientRepository) GetIngredientByID(ctx context.Context, id int) (ingredientsDomain.Ingredient, error) {
-	return ingredientsDomain.Ingredient{}, nil
+func (r *IngredientRepository) GetIngredientByID(ctx context.Context, id string) (ingredientsDomain.Ingredient, error) {
+	query := db.GetQuery(ctx)
+
+	ingredientUuidBytes, err := uuid.Parse(id)
+
+	if err != nil {
+		return ingredientsDomain.Ingredient{}, err
+	}
+
+	ingredientPgUUID := pgtype.UUID{
+		Bytes: ingredientUuidBytes,
+		Valid: true,
+	}
+
+	result, err := query.GetIngredient(ctx, ingredientPgUUID)
+	if err != nil {
+		return ingredientsDomain.Ingredient{}, err
+	}
+
+	ingredient, err := ingredientsDomain.NewIngredientFromRepository(uuid.UUID(result.ID.Bytes).String(), result.Name, uuid.UUID(result.IngredientCategoryID.Bytes).String(), result.CreatedAt.Time, result.UpdatedAt.Time)
+
+	if err != nil {
+		return ingredientsDomain.Ingredient{}, err
+	}
+
+	return ingredient, nil
 }
 
 func (r *IngredientRepository) GetIngredients(ctx context.Context) ([]ingredientsDomain.Ingredient, error) {
@@ -85,6 +109,6 @@ func (r *IngredientRepository) UpdateIngredient(ctx context.Context, ingredientC
 	return ingredientCategory, nil
 }
 
-func (r *IngredientRepository) DeleteIngredient(ctx context.Context, id int) error {
+func (r *IngredientRepository) DeleteIngredient(ctx context.Context, id string) error {
 	return nil
 }
