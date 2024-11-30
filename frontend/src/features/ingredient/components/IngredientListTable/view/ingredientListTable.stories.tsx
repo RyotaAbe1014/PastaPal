@@ -10,5 +10,31 @@ export default meta;
 type Story = StoryObj<typeof IngredientListTableView>;
 
 export const Default: Story = {
-	args: {},
+	args: {
+		onDeleteButtonClick: (ingredientId: string) => {
+			console.log(ingredientId);
+		},
+
+		onEditButtonClick: (ingredientId: string) => {
+			console.log(ingredientId);
+		},
+		ingredients: [
+			{
+				id: "1",
+				name: "トマト",
+				ingredientCategoryId: "1",
+			},
+			{
+				id: "2",
+				name: "キュウリ",
+				ingredientCategoryId: "1",
+			},
+		],
+		ingredientCategories: [
+			{
+				id: "1",
+				name: "野菜",
+			},
+		],
+	},
 };

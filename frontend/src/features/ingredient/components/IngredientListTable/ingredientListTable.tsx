@@ -21,12 +21,11 @@ export const IngredientListTable = () => {
 
 	const onDeleteButtonClick = (ingredientId: string) => {
 		console.log(ingredientId);
-	}
+	};
 
 	const onEditButtonClick = (ingredientId: string) => {
 		console.log(ingredientId);
-	}
-
+	};
 
 	return (
 		<IngredientListTableView
