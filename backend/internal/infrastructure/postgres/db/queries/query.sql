@@ -40,6 +40,6 @@ INSERT INTO ingredients (
 )
 RETURNING *;
 
--- name: deleteIngredient :exec
+-- name: DeleteIngredient :exec
 DELETE FROM ingredients
 WHERE id = $1;
