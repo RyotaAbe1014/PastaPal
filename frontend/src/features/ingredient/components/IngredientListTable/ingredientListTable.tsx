@@ -19,10 +19,21 @@ export const IngredientListTable = () => {
 		return <div>Loading...</div>;
 	}
 
+	const onDeleteButtonClick = (ingredientId: string) => {
+		console.log(ingredientId);
+	}
+
+	const onEditButtonClick = (ingredientId: string) => {
+		console.log(ingredientId);
+	}
+
+
 	return (
 		<IngredientListTableView
 			ingredients={ingredients}
 			ingredientCategories={ingredientCategories}
+			onDeleteButtonClick={onDeleteButtonClick}
+			onEditButtonClick={onEditButtonClick}
 		/>
 	);
 };

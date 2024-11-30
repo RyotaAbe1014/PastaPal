@@ -7,11 +7,15 @@ import { MdDelete, MdEdit } from "react-icons/md";
 type IngredientListTableViewProps = {
 	ingredients: Ingredient[];
 	ingredientCategories: IngredientCategory[];
+	onDeleteButtonClick: (ingredientId: string) => void;
+	onEditButtonClick: (ingredientId: string) => void;
 };
 
 export const IngredientListTableView = ({
 	ingredients,
 	ingredientCategories,
+	onDeleteButtonClick,
+	onEditButtonClick,
 }: IngredientListTableViewProps) => {
 	return (
 		<Card.Root variant={"elevated"} minHeight={"500px"} overflowY={"auto"}>
@@ -52,6 +56,7 @@ export const IngredientListTableView = ({
 										color={"green.400"}
 										borderColor={"green.400"}
 										variant={"outline"}
+										onClick={() => onEditButtonClick(ingredient.id)}
 									>
 										<MdEdit />
 									</Button>
@@ -59,6 +64,7 @@ export const IngredientListTableView = ({
 										color={"red.400"}
 										borderColor={"red.400"}
 										variant={"outline"}
+										onClick={() => onDeleteButtonClick(ingredient.id)}
 									>
 										<MdDelete />
 									</Button>
