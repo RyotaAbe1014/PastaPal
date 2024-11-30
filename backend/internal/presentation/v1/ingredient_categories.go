@@ -11,14 +11,13 @@ import (
 )
 
 func IngredientCategoriesRouter(g *echo.Group) {
+	ingredientCategoryRepository := repository.NewIngredientCategoryRepository()
+	ingredientCategoryService := ingredient_categories_service.NewIngredientCategoryService(ingredientCategoryRepository)
+	ingredientCategoryController := ingredient_categories_controller.NewIngredientCategoryController(ingredientCategoryService)
+
 	// 食材種別管理
 	g.POST("", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		// TODO: ここのDIはもっとスマートに書けるはず、他のingredientCategory関連の処理と共通化できるはず
-		ingredientCategoryRepository := repository.NewIngredientCategoryRepository()
-		ingredientCategoryService := ingredient_categories_service.NewIngredientCategoryService(ingredientCategoryRepository)
-		ingredientCategoryController := ingredient_categories_controller.NewIngredientCategoryController(ingredientCategoryService)
-
 		req := new(ingredient_categories_controller.CreateIngredientCategoryRequest)
 		if err := c.Bind(req); err != nil {
 			return c.JSON(http.StatusBadRequest, err.Error())
@@ -37,9 +36,6 @@ func IngredientCategoriesRouter(g *echo.Group) {
 
 	g.GET((""), func(c echo.Context) error {
 		ctx := c.Request().Context()
-		ingredientCategoryRepository := repository.NewIngredientCategoryRepository()
-		ingredientCategoryService := ingredient_categories_service.NewIngredientCategoryService(ingredientCategoryRepository)
-		ingredientCategoryController := ingredient_categories_controller.NewIngredientCategoryController(ingredientCategoryService)
 
 		result, err := ingredientCategoryController.GetIngredientCategories(ctx)
 

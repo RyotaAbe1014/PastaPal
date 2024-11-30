@@ -10,13 +10,13 @@ import (
 )
 
 func IngredientsRouter(g *echo.Group) {
+	ingredientRepository := repository.NewIngredientRepository()
+	ingredientService := ingredients_service.NewIngredientService(ingredientRepository)
+	ingredientController := ingredients_controller.NewIngredientController(ingredientService)
+
 	// 食材管理
 	g.GET((""), func(c echo.Context) error {
 		ctx := c.Request().Context()
-		ingredientRepository := repository.NewIngredientRepository()
-		ingredientService := ingredients_service.NewIngredientService(ingredientRepository)
-		ingredientController := ingredients_controller.NewIngredientController(ingredientService)
-
 		result, err := ingredientController.GetIngredients(ctx)
 
 		if err != nil {
@@ -32,10 +32,6 @@ func IngredientsRouter(g *echo.Group) {
 
 	g.POST("", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		ingredientRepository := repository.NewIngredientRepository()
-		ingredientService := ingredients_service.NewIngredientService(ingredientRepository)
-		ingredientController := ingredients_controller.NewIngredientController(ingredientService)
-
 		req := new(ingredients_controller.CreateIngredientRequest)
 		if err := c.Bind(req); err != nil {
 			return c.JSON(http.StatusBadRequest, err.Error())
