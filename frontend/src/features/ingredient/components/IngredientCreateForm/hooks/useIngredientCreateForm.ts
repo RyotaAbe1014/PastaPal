@@ -1,7 +1,7 @@
 import { ApiClient, isApiError } from "@/api/client";
 import type { CreateIngredientRequest } from "@/api/types/createIngredientRequest";
 import type { CreateIngredientResponse } from "@/api/types/createIngredientResponse";
-import { useGetIngredientCategoryList } from "@/features/ingredient/hooks";
+import { useGetIngredientCategoryList, useGetIngredientList } from "@/features/ingredient/hooks";
 import { useState } from "react";
 
 export const useIngredientCreateForm = () => {
@@ -10,6 +10,7 @@ export const useIngredientCreateForm = () => {
 	const [ingredientCategoryId, setIngredientCategoryId] = useState<string>("");
 
 	const { ingredientCategories, isLoading } = useGetIngredientCategoryList();
+	const { mutate } = useGetIngredientList();
 
 	const onConfirm = async () => {
 		if (!ingredientCategoryId) {
@@ -30,6 +31,8 @@ export const useIngredientCreateForm = () => {
 			// TODO: エラーをダイアログで表示する
 			return;
 		}
+
+		mutate();
 	};
 
 	return {

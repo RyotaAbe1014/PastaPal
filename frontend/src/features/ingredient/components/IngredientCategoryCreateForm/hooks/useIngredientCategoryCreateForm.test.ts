@@ -7,10 +7,16 @@ import { useIngredientCategoryCreateForm } from "./useIngredientCategoryCreateFo
 beforeEach(() => {
 	server.resetHandlers();
 	vi.resetAllMocks();
+	server.use(
+		http.get("http://localhost:8000/api/v1/ingredient-categories", () => {
+			return HttpResponse.json({ data: [] });
+		}),
+	);
 });
 
 describe("useIngredientCategoryCreateForm", () => {
 	it("初期値が正しく設定されていること", () => {
+
 		const { result } = renderHook(() => useIngredientCategoryCreateForm());
 
 		expect(result.current.name).toBe("");

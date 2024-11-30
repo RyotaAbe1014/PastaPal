@@ -1,11 +1,13 @@
 import { ApiClient, isApiError } from "@/api/client";
 import type { CreateIngredientCategoryRequest } from "@/api/types/createIngredientCategoryRequest";
 import type { CreateIngredientCategoryResponse } from "@/api/types/createIngredientCategoryResponse";
+import { useGetIngredientCategoryList } from "@/features/ingredient/hooks";
 import { useState } from "react";
 
 export const useIngredientCategoryCreateForm = () => {
 	const api = ApiClient();
 	const [name, setName] = useState("");
+	const { mutate } = useGetIngredientCategoryList();
 
 	const onConfirm = async () => {
 		const response = await api.Post<
@@ -18,6 +20,7 @@ export const useIngredientCategoryCreateForm = () => {
 			return;
 		}
 
+		mutate();
 		setName("");
 	};
 
