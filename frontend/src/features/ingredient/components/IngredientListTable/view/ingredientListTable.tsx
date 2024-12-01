@@ -8,7 +8,7 @@ type IngredientListTableViewProps = {
 	ingredients: Ingredient[];
 	ingredientCategories: IngredientCategory[];
 	onDeleteButtonClick: (ingredientId: string) => void;
-	onEditButtonClick: (ingredientId: string) => void;
+	onEditButtonClick: (ingredient: Ingredient) => void;
 };
 
 export const IngredientListTableView = ({
@@ -56,7 +56,7 @@ export const IngredientListTableView = ({
 										color={"green.400"}
 										borderColor={"green.400"}
 										variant={"outline"}
-										onClick={() => onEditButtonClick(ingredient.id)}
+										onClick={() => onEditButtonClick(ingredient)}
 									>
 										<MdEdit />
 									</Button>

@@ -1,13 +1,21 @@
 import { ApiClient, isApiError } from "@/api/client";
 import type { NoContentResponse } from "@/api/types/common/noContentResponse";
+import type { Ingredient } from "@/api/types/getIngredientListResponse";
+import { useState } from "react";
 import {
 	useGetIngredientCategoryList,
 	useGetIngredientList,
 } from "../../hooks";
+import { IngredientEditFormDialog } from "../IngredientEditFormDialog";
 import { IngredientListTableView } from "./view";
 
 export const IngredientListTable = () => {
 	const api = ApiClient();
+	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+	const [targetIngredient, setTargetIngredient] = useState<Ingredient | null>(
+		null,
+	);
+
 	const {
 		ingredients,
 		isLoading: isIngredientsLoading,
@@ -39,17 +47,24 @@ export const IngredientListTable = () => {
 		mutate();
 	};
 
-	const onEditButtonClick = (ingredientId: string) => {
-		// TODO: 編集画面に遷移
-		console.log(ingredientId);
+	const onEditButtonClick = (ingredient: Ingredient) => {
+		setTargetIngredient(ingredient);
+		setIsEditDialogOpen(true);
 	};
 
 	return (
-		<IngredientListTableView
-			ingredients={ingredients}
-			ingredientCategories={ingredientCategories}
-			onDeleteButtonClick={onDeleteButtonClick}
-			onEditButtonClick={onEditButtonClick}
-		/>
+		<>
+			<IngredientListTableView
+				ingredients={ingredients}
+				ingredientCategories={ingredientCategories}
+				onDeleteButtonClick={onDeleteButtonClick}
+				onEditButtonClick={onEditButtonClick}
+			/>
+			<IngredientEditFormDialog
+				ingredient={targetIngredient}
+				open={isEditDialogOpen}
+				setOpen={setIsEditDialogOpen}
+			/>
+		</>
 	);
 };

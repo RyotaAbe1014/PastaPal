@@ -1,3 +1,4 @@
+import type { Ingredient } from "@/api/types/getIngredientListResponse";
 import type { Meta, StoryObj } from "@storybook/react";
 import { IngredientListTableView } from ".";
 
@@ -15,8 +16,8 @@ export const Default: Story = {
 			console.log(ingredientId);
 		},
 
-		onEditButtonClick: (ingredientId: string) => {
-			console.log(ingredientId);
+		onEditButtonClick: (ingredient: Ingredient) => {
+			console.log(ingredient);
 		},
 		ingredients: [
 			{
