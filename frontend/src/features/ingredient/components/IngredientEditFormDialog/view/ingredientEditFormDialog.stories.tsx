@@ -26,7 +26,7 @@ export const Default: Story = {
 			{
 				id: "3",
 				name: "肉",
-			}
+			},
 		],
 		name: "トマト",
 		setName: () => {},

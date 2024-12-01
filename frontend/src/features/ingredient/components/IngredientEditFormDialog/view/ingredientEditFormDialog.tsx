@@ -40,8 +40,7 @@ export const IngredientEditFormDialogView = ({
 	ingredientCategoryId,
 	setIngredientCategoryId,
 }: IngredientEditFormDialogViewProps) => {
-
-	const contentRef = useRef<HTMLDivElement>(null)
+	const contentRef = useRef<HTMLDivElement>(null);
 
 	const items = useMemo(() => {
 		return createListCollection({
@@ -58,7 +57,12 @@ export const IngredientEditFormDialogView = ({
 				<DialogHeader>
 					<DialogTitle>食材情報更新</DialogTitle>
 				</DialogHeader>
-				<DialogBody ref={contentRef}  display={"flex"} flexDirection={"row"} gap={3}>
+				<DialogBody
+					ref={contentRef}
+					display={"flex"}
+					flexDirection={"row"}
+					gap={3}
+				>
 					<Input
 						placeholder="食材名"
 						backgroundColor={"green.100"}
@@ -88,7 +92,9 @@ export const IngredientEditFormDialogView = ({
 				</DialogBody>
 				<DialogFooter>
 					<Button variant="outline">Cancel</Button>
-					<Button backgroundColor={"green.600"} onClick={onConfirm}>保存</Button>
+					<Button backgroundColor={"green.600"} onClick={onConfirm}>
+						保存
+					</Button>
 				</DialogFooter>
 				<DialogCloseTrigger />
 			</DialogContent>
