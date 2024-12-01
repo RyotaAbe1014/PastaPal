@@ -43,3 +43,11 @@ RETURNING *;
 -- name: DeleteIngredient :exec
 DELETE FROM ingredients
 WHERE id = $1;
+
+-- name: UpdateIngredient :one
+UPDATE ingredients
+  set name = $2,
+  ingredient_category_id = $3
+WHERE
+  id = $1
+RETURNING *;
