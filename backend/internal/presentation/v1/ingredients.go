@@ -50,13 +50,13 @@ func IngredientsRouter(g *echo.Group) {
 
 	g.PUT("/:id", func(c echo.Context) error {
 		ctx := c.Request().Context()
+		id := c.Param("id")
 		req := new(ingredients_controller.UpdateIngredientRequest)
 		if err := c.Bind(req); err != nil {
 			return c.JSON(http.StatusBadRequest, err.Error())
 		}
 
-		result, err := ingredientController.UpdateIngredient(ctx, ingredients_controller.UpdateIngredientRequest{
-			ID:                   req.ID,
+		result, err := ingredientController.UpdateIngredient(ctx, id, ingredients_controller.UpdateIngredientRequest{
 			Name:                 req.Name,
 			IngredientCategoryID: req.IngredientCategoryID,
 		})

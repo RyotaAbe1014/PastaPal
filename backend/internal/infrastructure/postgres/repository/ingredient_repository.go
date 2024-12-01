@@ -106,7 +106,44 @@ func (r *IngredientRepository) GetIngredients(ctx context.Context) ([]ingredient
 }
 
 func (r *IngredientRepository) UpdateIngredient(ctx context.Context, ingredientCategory ingredientsDomain.Ingredient) (ingredientsDomain.Ingredient, error) {
-	return ingredientCategory, nil
+	query := db.GetQuery(ctx)
+	ingredientUuidBytes, err := uuid.Parse(ingredientCategory.ID())
+	if err != nil {
+		return ingredientsDomain.Ingredient{}, err
+	}
+
+	ingredientCategoryUuidBytes, err := uuid.Parse(ingredientCategory.IngredientCategoryID())
+
+	if err != nil {
+		return ingredientsDomain.Ingredient{}, err
+	}
+
+	// postgresのuuid型に変換
+	ingredientPgUUID := pgtype.UUID{
+		Bytes: ingredientUuidBytes,
+		Valid: true,
+	}
+
+	ingredientCategoryPgUUID := pgtype.UUID{
+		Bytes: ingredientCategoryUuidBytes,
+		Valid: true,
+	}
+
+	result, err := query.UpdateIngredient(ctx, dbgen.UpdateIngredientParams{
+		ID:                   ingredientPgUUID,
+		Name:                 ingredientCategory.Name(),
+		IngredientCategoryID: ingredientCategoryPgUUID,
+	})
+	if err != nil {
+		return ingredientsDomain.Ingredient{}, err
+	}
+
+	updatedIngredient, err := ingredientsDomain.NewIngredient(uuid.UUID(result.ID.Bytes).String(), result.Name, uuid.UUID(result.IngredientCategoryID.Bytes).String())
+	if err != nil {
+		return ingredientsDomain.Ingredient{}, err
+	}
+
+	return updatedIngredient, nil
 }
 
 func (r *IngredientRepository) DeleteIngredient(ctx context.Context, id string) error {

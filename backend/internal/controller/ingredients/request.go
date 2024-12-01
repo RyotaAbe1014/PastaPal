@@ -5,7 +5,6 @@ type CreateIngredientRequest struct {
 	IngredientCategoryID string `json:"ingredientCategoryId"`
 }
 type UpdateIngredientRequest struct {
-	ID                   string `json:"id"`
 	IngredientCategoryID string `json:"ingredientCategoryId"`
 	Name                 string `json:"name"`
 }
