@@ -54,7 +54,7 @@ export const IngredientEditFormDialogView = ({
 	}, [ingredientCategoryList]);
 
 	return (
-		<DialogRoot lazyMount open={open} onOpenChange={(e) => setOpen(e.open)}>
+		<DialogRoot lazyMount open={open} onOpenChange={(e) => setOpen(e.open)} placement={"center"}>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>食材情報更新</DialogTitle>
@@ -93,7 +93,7 @@ export const IngredientEditFormDialogView = ({
 					</SelectRoot>
 				</DialogBody>
 				<DialogFooter>
-					<Button variant="outline">Cancel</Button>
+					<Button variant="outline" onClick={() => setOpen(false)}>キャンセル</Button>
 					<Button backgroundColor={"green.600"} onClick={onConfirm}>
 						保存
 					</Button>
