@@ -40,7 +40,6 @@ export const IngredientEditFormDialogView = ({
 	ingredientCategoryId,
 	setIngredientCategoryId,
 }: IngredientEditFormDialogViewProps) => {
-
 	// ダイアログ内でselectを使用するためには、refを使用する必要がある
 	// https://www.chakra-ui.com/docs/components/select#within-dialog
 	const contentRef = useRef<HTMLDivElement>(null);
