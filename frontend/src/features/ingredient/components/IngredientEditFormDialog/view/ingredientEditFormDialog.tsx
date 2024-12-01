@@ -17,7 +17,7 @@ import {
 	SelectValueText,
 } from "@/components/ui/select";
 import { Input, createListCollection } from "@chakra-ui/react";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 
 export type IngredientEditFormDialogViewProps = {
 	open: boolean;
@@ -40,6 +40,9 @@ export const IngredientEditFormDialogView = ({
 	ingredientCategoryId,
 	setIngredientCategoryId,
 }: IngredientEditFormDialogViewProps) => {
+
+	const contentRef = useRef<HTMLDivElement>(null)
+
 	const items = useMemo(() => {
 		return createListCollection({
 			items: ingredientCategoryList.map((category) => ({
@@ -53,9 +56,9 @@ export const IngredientEditFormDialogView = ({
 		<DialogRoot lazyMount open={open} onOpenChange={(e) => setOpen(e.open)}>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Dialog Title</DialogTitle>
+					<DialogTitle>食材情報更新</DialogTitle>
 				</DialogHeader>
-				<DialogBody>
+				<DialogBody ref={contentRef}  display={"flex"} flexDirection={"row"} gap={3}>
 					<Input
 						placeholder="食材名"
 						backgroundColor={"green.100"}
@@ -74,7 +77,7 @@ export const IngredientEditFormDialogView = ({
 						<SelectTrigger>
 							<SelectValueText placeholder="種別を選択" />
 						</SelectTrigger>
-						<SelectContent>
+						<SelectContent portalRef={contentRef}>
 							{items.items.map((item) => (
 								<SelectItem item={item} key={item.value}>
 									{item.label}
@@ -85,7 +88,7 @@ export const IngredientEditFormDialogView = ({
 				</DialogBody>
 				<DialogFooter>
 					<Button variant="outline">Cancel</Button>
-					<Button onClick={onConfirm}>Save</Button>
+					<Button backgroundColor={"green.600"} onClick={onConfirm}>保存</Button>
 				</DialogFooter>
 				<DialogCloseTrigger />
 			</DialogContent>
