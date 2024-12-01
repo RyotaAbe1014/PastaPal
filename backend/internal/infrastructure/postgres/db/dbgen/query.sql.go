@@ -182,6 +182,34 @@ func (q *Queries) ListIngredientsCategory(ctx context.Context) ([]IngredientCate
 	return items, nil
 }
 
+const updateIngredient = `-- name: UpdateIngredient :one
+UPDATE ingredients
+  set name = $2,
+  ingredient_category_id = $3
+WHERE
+  id = $1
+RETURNING id, name, ingredient_category_id, created_at, updated_at
+`
+
+type UpdateIngredientParams struct {
+	ID                   pgtype.UUID
+	Name                 string
+	IngredientCategoryID pgtype.UUID
+}
+
+func (q *Queries) UpdateIngredient(ctx context.Context, arg UpdateIngredientParams) (Ingredient, error) {
+	row := q.db.QueryRow(ctx, updateIngredient, arg.ID, arg.Name, arg.IngredientCategoryID)
+	var i Ingredient
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.IngredientCategoryID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
 const updateIngredientCategory = `-- name: UpdateIngredientCategory :exec
 UPDATE ingredient_categories
   set name = $2
