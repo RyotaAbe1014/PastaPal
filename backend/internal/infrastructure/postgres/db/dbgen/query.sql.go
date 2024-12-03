@@ -86,65 +86,39 @@ func (q *Queries) DeleteIngredientCategory(ctx context.Context, id pgtype.UUID) 
 	return err
 }
 
-const findIngredientByName = `-- name: FindIngredientByName :many
+const findIngredientByName = `-- name: FindIngredientByName :one
 SELECT id, name, ingredient_category_id, created_at, updated_at FROM ingredients
-WHERE name = $1
+WHERE name = $1 LIMIT 1
 `
 
-func (q *Queries) FindIngredientByName(ctx context.Context, name string) ([]Ingredient, error) {
-	rows, err := q.db.Query(ctx, findIngredientByName, name)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	var items []Ingredient
-	for rows.Next() {
-		var i Ingredient
-		if err := rows.Scan(
-			&i.ID,
-			&i.Name,
-			&i.IngredientCategoryID,
-			&i.CreatedAt,
-			&i.UpdatedAt,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
+func (q *Queries) FindIngredientByName(ctx context.Context, name string) (Ingredient, error) {
+	row := q.db.QueryRow(ctx, findIngredientByName, name)
+	var i Ingredient
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.IngredientCategoryID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
 }
 
-const findIngredientCategoryByName = `-- name: FindIngredientCategoryByName :many
+const findIngredientCategoryByName = `-- name: FindIngredientCategoryByName :one
 SELECT id, name, created_at, updated_at FROM ingredient_categories
-WHERE name = $1
+WHERE name = $1 LIMIT 1
 `
 
-func (q *Queries) FindIngredientCategoryByName(ctx context.Context, name string) ([]IngredientCategory, error) {
-	rows, err := q.db.Query(ctx, findIngredientCategoryByName, name)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	var items []IngredientCategory
-	for rows.Next() {
-		var i IngredientCategory
-		if err := rows.Scan(
-			&i.ID,
-			&i.Name,
-			&i.CreatedAt,
-			&i.UpdatedAt,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
+func (q *Queries) FindIngredientCategoryByName(ctx context.Context, name string) (IngredientCategory, error) {
+	row := q.db.QueryRow(ctx, findIngredientCategoryByName, name)
+	var i IngredientCategory
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
 }
 
 const getIngredient = `-- name: GetIngredient :one
