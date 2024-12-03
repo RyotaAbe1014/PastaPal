@@ -3,6 +3,7 @@ package v1
 import (
 	"net/http"
 
+	"github.com/RyotaAbe1014/Pastapal/internal/presentation/settings"
 	"github.com/labstack/echo/v4"
 )
 
@@ -11,9 +12,11 @@ func Router(g *echo.Group) {
 	AuthRouter(ag)
 
 	icg := g.Group("/ingredient-categories")
+	icg.Use(settings.GitHubAuthMiddleware)
 	IngredientCategoriesRouter(icg)
 
 	ig := g.Group("/ingredients")
+	ig.Use(settings.GitHubAuthMiddleware)
 	IngredientsRouter(ig)
 
 	// レシピ管理

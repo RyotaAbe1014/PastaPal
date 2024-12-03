@@ -39,6 +39,7 @@ func ExchangeCodeForToken(ctx context.Context, code string) (*oauth2.Token, erro
 	return OAuth2Config.Exchange(ctx, code)
 }
 
+// アクセストークンを使ってユーザ情報を取得
 func GetUser(ctx context.Context, accessToken string) (*GitHubUser, error) {
 	client := OAuth2Config.Client(ctx, &oauth2.Token{AccessToken: accessToken})
 	resp, err := client.Get("https://api.github.com/user")
