@@ -6,6 +6,10 @@ ORDER BY name;
 SELECT * FROM ingredient_categories
 WHERE id = $1 LIMIT 1;
 
+-- name: FindIngredientCategoryByName :many
+SELECT * FROM ingredient_categories
+WHERE name = $1;
+
 -- name: CreateIngredientCategory :one
 INSERT INTO ingredient_categories (
   id, name
@@ -31,6 +35,10 @@ ORDER BY name;
 -- name: GetIngredient :one
 SELECT * FROM ingredients
 WHERE id = $1 LIMIT 1;
+
+-- name: FindIngredientByName :many
+SELECT * FROM ingredients
+WHERE name = $1;
 
 -- name: CreateIngredient :one
 INSERT INTO ingredients (
