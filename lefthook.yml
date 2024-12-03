@@ -17,7 +17,10 @@ pre-commit:
     check:
       root: frontend/
       glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
-      run: npm run check:fix --colors=off {staged_files}
+      run: |
+        echo "Staged files: {staged_files}"
+        npm run check:fix --colors=off {staged_files}
+
 #     rubocop:
 #       tags: backend style
 #       glob: "*.rb"
