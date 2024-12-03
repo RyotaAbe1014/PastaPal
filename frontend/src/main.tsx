@@ -2,6 +2,7 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 
+import { SWRConfig } from "swr";
 import { Provider } from "./components/ui/provider";
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
@@ -23,7 +24,14 @@ if (rootElement && !rootElement.innerHTML) {
 	root.render(
 		<StrictMode>
 			<Provider>
-				<RouterProvider router={router} />
+				<SWRConfig
+					value={{
+						revalidateOnFocus: false,
+						revalidateOnReconnect: false,
+					}}
+				>
+					<RouterProvider router={router} />
+				</SWRConfig>
 			</Provider>
 		</StrictMode>,
 	);
