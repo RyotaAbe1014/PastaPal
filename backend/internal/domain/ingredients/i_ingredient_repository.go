@@ -9,4 +9,5 @@ type IIngredientRepository interface {
 	GetIngredients(ctx context.Context) ([]Ingredient, error)
 	UpdateIngredient(ctx context.Context, ingredient Ingredient) (Ingredient, error)
 	DeleteIngredient(ctx context.Context, id string) error
+	FindByName(name string) (*Ingredient, error)
 }

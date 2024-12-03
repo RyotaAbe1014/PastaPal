@@ -166,3 +166,22 @@ func (r *IngredientRepository) DeleteIngredient(ctx context.Context, id string) 
 
 	return nil
 }
+
+func (r *IngredientRepository) FindByName(name string) (*ingredientsDomain.Ingredient, error) {
+	query := db.GetQuery(context.Background())
+	result, err := query.FindIngredientByName(context.Background(), name)
+	if err != nil {
+		return nil, err
+	}
+
+	if uuid.UUID(result.ID.Bytes).String() == "" {
+		return nil, nil
+	}
+
+	ingredient, err := ingredientsDomain.NewIngredientFromRepository(uuid.UUID(result.ID.Bytes).String(), result.Name, uuid.UUID(result.IngredientCategoryID.Bytes).String(), result.CreatedAt.Time, result.UpdatedAt.Time)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ingredient, nil
+}

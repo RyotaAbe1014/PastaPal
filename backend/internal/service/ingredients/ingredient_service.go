@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/RyotaAbe1014/Pastapal/internal/domain/ingredients"
+	"github.com/RyotaAbe1014/Pastapal/internal/domain/ingredients/service"
 	"github.com/google/uuid"
 )
 
@@ -32,6 +33,13 @@ func NewIngredientService(ir ingredients.IIngredientRepository) IngredientServic
 
 func (is *ingredientService) CreateIngredient(ctx context.Context, requestDTO CreateIngredientRequestDTO) (ingredients.Ingredient, error) {
 	id := uuid.New().String()
+
+	// 重複チェック
+	err := service.IngredientDuplicateCheck(is.ir, requestDTO.Name)
+	if err != nil {
+		return ingredients.Ingredient{}, err
+	}
+
 	ingredient, err := ingredients.NewIngredient(id, requestDTO.Name, requestDTO.IngredientCategoryID)
 
 	if err != nil {
@@ -58,9 +66,15 @@ func (is *ingredientService) GetIngredients(ctx context.Context) ([]ingredients.
 
 func (is *ingredientService) UpdateIngredient(ctx context.Context, requestDTO CreateIngredientRequestDTO) (ingredients.Ingredient, error) {
 	targetIngredient, err := is.GetIngredientByID(ctx, requestDTO.ID)
-
 	if err != nil {
 		return ingredients.Ingredient{}, err
+	}
+	if requestDTO.Name != targetIngredient.Name() {
+		// 名前が変更された場合は重複チェックを行う
+		err = service.IngredientDuplicateCheck(is.ir, requestDTO.Name)
+		if err != nil {
+			return ingredients.Ingredient{}, err
+		}
 	}
 
 	err = targetIngredient.UpdateName(requestDTO.Name)
