@@ -18,9 +18,6 @@ pre-commit:
       root: frontend/
       glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
       run: |
-        echo "Using Node.js version:"
-        node -v
-        node -v
         npm run check:fix --colors=off {staged_files}
 #     rubocop:
 #       tags: backend style
