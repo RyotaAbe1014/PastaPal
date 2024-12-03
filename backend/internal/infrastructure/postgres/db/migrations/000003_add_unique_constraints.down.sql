@@ -1,0 +1,5 @@
+ALTER TABLE ingredient_categories
+DROP CONSTRAINT unique_ingredient_category_name;
+
+ALTER TABLE ingredients
+DROP CONSTRAINT unique_ingredient_name;
