@@ -1,0 +1,9 @@
+-- レシピ
+CREATE TABLE IF NOT EXISTS recipes (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  name VARCHAR(255) NOT NULL,
+  instructions TEXT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+);
