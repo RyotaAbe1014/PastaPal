@@ -22,3 +22,27 @@ type IngredientCategory struct {
 	CreatedAt pgtype.Timestamp
 	UpdatedAt pgtype.Timestamp
 }
+
+type Recipe struct {
+	ID           pgtype.UUID
+	Name         string
+	Instructions string
+	CreatedAt    pgtype.Timestamp
+	UpdatedAt    pgtype.Timestamp
+}
+
+type RecipeIngredient struct {
+	RecipeIngredientsID int32
+	RecipeID            pgtype.UUID
+	IngredientID        pgtype.UUID
+	Quantity            pgtype.Numeric
+	UnitID              int32
+	CreatedAt           pgtype.Timestamp
+	UpdatedAt           pgtype.Timestamp
+}
+
+type Unit struct {
+	ID          int32
+	Name        string
+	Description pgtype.Text
+}
