@@ -12,3 +12,14 @@
 - Biome
 - Vitest
 - lefthookによるpre-commit
+
+### バックエンド
+- Go
+- Echo
+- sqlc
+- go-migrate
+- go-sqlmock
+- Air
+- Docker
+- Docker Compose
+- PostgreSQL
