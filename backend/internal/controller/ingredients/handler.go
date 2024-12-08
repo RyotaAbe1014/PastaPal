@@ -13,17 +13,17 @@ type IngredientController interface {
 	DeleteIngredient(ctx context.Context, id string) error
 }
 
-type ingredientCategoryController struct {
-	ingredientCategoryService ingredients.IngredientService
+type ingredientController struct {
+	ingredientService ingredients.IngredientService
 }
 
 // constructorを使用して、controllerの構造体を生成
 func NewIngredientController(is ingredients.IngredientService) IngredientController {
-	return &ingredientCategoryController{ingredientCategoryService: is}
+	return &ingredientController{ingredientService: is}
 }
 
-func (h *ingredientCategoryController) CreateIngredient(ctx context.Context, request CreateIngredientRequest) (CreateIngredientResponse, error) {
-	ingredientCategory, err := h.ingredientCategoryService.CreateIngredient(ctx, ingredients.CreateIngredientRequestDTO{
+func (h *ingredientController) CreateIngredient(ctx context.Context, request CreateIngredientRequest) (CreateIngredientResponse, error) {
+	ingredientCategory, err := h.ingredientService.CreateIngredient(ctx, ingredients.CreateIngredientRequestDTO{
 		Name:                 request.Name,
 		IngredientCategoryID: request.IngredientCategoryID,
 	})
@@ -39,8 +39,8 @@ func (h *ingredientCategoryController) CreateIngredient(ctx context.Context, req
 	}, nil
 }
 
-func (h *ingredientCategoryController) GetIngredients(ctx context.Context) (GetIngredientsResponse, error) {
-	ingredients, err := h.ingredientCategoryService.GetIngredients(ctx)
+func (h *ingredientController) GetIngredients(ctx context.Context) (GetIngredientsResponse, error) {
+	ingredients, err := h.ingredientService.GetIngredients(ctx)
 	if err != nil {
 		return GetIngredientsResponse{}, err
 	}
@@ -59,8 +59,8 @@ func (h *ingredientCategoryController) GetIngredients(ctx context.Context) (GetI
 	return response, nil
 }
 
-func (h *ingredientCategoryController) UpdateIngredient(ctx context.Context, id string, req UpdateIngredientRequest) (UpdateIngredientResponse, error) {
-	ingredient, err := h.ingredientCategoryService.UpdateIngredient(ctx, ingredients.CreateIngredientRequestDTO{
+func (h *ingredientController) UpdateIngredient(ctx context.Context, id string, req UpdateIngredientRequest) (UpdateIngredientResponse, error) {
+	ingredient, err := h.ingredientService.UpdateIngredient(ctx, ingredients.CreateIngredientRequestDTO{
 		ID:                   id,
 		Name:                 req.Name,
 		IngredientCategoryID: req.IngredientCategoryID,
@@ -77,6 +77,6 @@ func (h *ingredientCategoryController) UpdateIngredient(ctx context.Context, id 
 	}, nil
 }
 
-func (h *ingredientCategoryController) DeleteIngredient(ctx context.Context, id string) error {
-	return h.ingredientCategoryService.DeleteIngredient(ctx, id)
+func (h *ingredientController) DeleteIngredient(ctx context.Context, id string) error {
+	return h.ingredientService.DeleteIngredient(ctx, id)
 }
