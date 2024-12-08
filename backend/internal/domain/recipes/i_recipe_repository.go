@@ -8,5 +8,5 @@ type IRecipeRepository interface {
 	GetRecipes(ctx context.Context) ([]Recipe, error)
 	UpdateRecipe(ctx context.Context, recipe Recipe) (Recipe, error)
 	DeleteRecipe(ctx context.Context, id string) error
-	FindByName(name string) (*Recipe, error)
+	FindByName(ctx context.Context, name string) (*Recipe, error)
 }

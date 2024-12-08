@@ -9,7 +9,6 @@ import (
 	"golang.org/x/net/context"
 )
 
-// 抽象クラス
 type IngredientRepository struct {
 }
 
